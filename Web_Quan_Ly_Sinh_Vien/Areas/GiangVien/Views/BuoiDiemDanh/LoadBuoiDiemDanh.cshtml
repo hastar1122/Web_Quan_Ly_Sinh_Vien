@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Web_Quan_Ly_Sinh_Vien.ViewModels.DiemDanhViewModel>
+
+@{
+    int x = 1;
+}
+
+@foreach (var item in Model)
+{
+    <tr class="text-center">
+        <td width="1%">
+            @x
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.MaSV)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.HoSV)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.TenSV)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.TenLop)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.NgaySinh, "{0: dd-MM-yyyy}")
+        </td>
+        @{
+            foreach (var i in item.DiemDanh)
+            {
+                if (i == true)
+                {
+                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                }
+                else
+                {
+                    <td class="text-center"><i class="fas fa-times text-danger"></i></td>
+                }
+            }
+        }
+    </tr>
+    x++;
+}

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<tblUser>
+
+@{
+    int i = 1;
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="1%">
+                    STT
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MaSV)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ho)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ten)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tblLop.TenLop)
+                </th>
+                <th>
+                    Thông tin
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GioiTinh)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NgaySinh)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrangThai)
+                </th>
+                <th>
+                    Các thao tác
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaSV)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ho)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ten)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tblLop.TenLop)
+                    </td>
+                    <td>
+                        <ul class="ml-n4 mb-n2">
+                            <li>
+                                @Html.LabelFor(model => item.Email, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.Email)
+                            </li>
+                            <li>
+                                @Html.LabelFor(model => item.SDT, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.SDT)
+                            </li>
+                            <li>
+                                @Html.LabelFor(model => item.CCCD, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.CCCD)
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GioiTinh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NgaySinh)
+                    </td>
+                    <td class="align-items-center">
+                        @{
+                            if (item.TrangThai == true)
+                            {
+                                <button style="text-decoration: none; cursor: pointer" data-id="@item.Id" href="#" class="btn-active bg-success text-white text-center rounded"> Hoạt động </button>
+                            }
+                            else
+                            {
+                                <button style="text-decoration: none; cursor: pointer" data-id="@item.Id" href="#" class="btn-active bg-danger text-white text-center rounded"> Khóa </button>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a class="information btn btn-sm btn-primary" data-id="@item.Id" data-toggle="tooltip" title="Sửa"> <i class="far fa-edit"></i></a>
+                        <a class="delete btn btn-sm btn-danger" data-id="@item.Id" data-toggle="tooltip" title="Xóa"> <i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+
+

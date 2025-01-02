@@ -1,0 +1,66 @@
+﻿@model IEnumerable<tblNhomChat>
+
+@{
+    long user = long.Parse(User.Identity.Name);
+}
+
+<ul class="list-group" id="listMessage2">
+    @foreach (var item in Model)
+    {
+        <li class="border-left-info mb-1">
+            <a href="#" data-id="@item.Id" class="connect2 list-group-item list-group-item-action border-0">
+                <div class="d-flex align-items-start">
+                    <img src="@Url.Content(item.Avatar)" class="rounded-circle mr-1" alt="Vanessa Tucker" width="40" height="40">
+                    <div class="flex-grow-1 ml-3">
+                        <strong>@item.TenNhom</strong>
+                        <div class="small">
+                            @{
+                                if (item.LastMsg == null)
+                                {
+                                    <span>Chưa có tin nhắn nào</span>
+                                }
+                                else if (item.tblTinNhan.NguoiGui == user)
+                                {
+                                    <span>Bạn: </span>
+                                }
+                                else if (item.tblTinNhan.NguoiGui != user)
+                                {
+                                    <span>@item.tblTinNhan.tblUser.Ten: </span>
+                                }
+                                if (item.LastMsg != null)
+                                {
+                                    if (item.tblTinNhan.LoaiTinNhan == 2 || item.tblTinNhan.LoaiTinNhan == 3)
+                                    {
+                                        var s = item.tblTinNhan.NoiDung.Split('/').LastOrDefault();
+                                        if (s.Length >= 20)
+                                        {
+                                            <span>@s.Substring(0, 17)...</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@s</span>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        if (item.tblTinNhan.NoiDung.Length >= 20)
+                                        {
+                                            <span>@item.tblTinNhan.NoiDung.Substring(0, 17)...</span>
+                                        }
+                                        else
+                                        {
+                                            @item.tblTinNhan.NoiDung
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    }
+
+</ul>
+

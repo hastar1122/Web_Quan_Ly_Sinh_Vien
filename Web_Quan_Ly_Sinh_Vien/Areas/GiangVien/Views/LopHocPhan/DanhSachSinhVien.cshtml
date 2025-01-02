@@ -1,0 +1,77 @@
+﻿@model IEnumerable<tblUser>
+
+@{
+    int i = 1;
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th class="text-center" width="1%">
+                    STT
+                </th>
+                <th>
+                    Mã sinh viên
+                </th>
+                <th>
+                    Họ đệm
+                </th>
+                <th>
+                    Tên
+                </th>
+                <th>
+                    Giới tính
+                </th>
+                <th>
+                    Ngày sinh
+                </th>
+                <th>
+                    Tên lớp
+                </th>
+                <th>
+                    Khóa
+                </th>
+                <th>
+                    Chọn
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center" width="1%">
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaSV)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ho)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ten)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GioiTinh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NgaySinh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tblLop.TenLop)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tblLop.Khoa)
+                    </td>
+                    <td width="1%">
+                        <input name="MaSV" type="checkbox" value="@item.Id" />
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+

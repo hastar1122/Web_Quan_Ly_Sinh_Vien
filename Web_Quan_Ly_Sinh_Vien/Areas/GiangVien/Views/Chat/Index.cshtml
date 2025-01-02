@@ -1,0 +1,727 @@
+﻿@model tblNhomChat
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/GiangVien/Views/Shared/_LayoutGV.cshtml";
+}
+
+<div class="card mb-5 shadow">
+    <div class="row g-0">
+        <div class="col-12 col-lg-5 col-xl-3 border-right">
+
+            <div class="px-4 d-none d-md-block">
+                <div class="d-flex align-items-center">
+                    <div class="order-0 mr-2">
+                        <a class="btn btn-outline-success openModal" data-toggle="modal" data-target="#lstUserModal"><i class="fas fa-plus-circle"></i></a>
+                    </div>
+                    <div class="flex-grow-1">
+                        <input type="text" id="search" class="form-control my-3" placeholder="Search...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active px-2 ml-1 LoadListNguoiNhan" data-toggle="tab" href="#listNguoiNhan"><i class="fas fa-user-friends"></i>Tin nhắn riêng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 LoadListNhomChat" data-toggle="tab" href="#listGroup"><i class="fas fa-users"></i>Tin nhắn nhóm</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="listNguoiNhan" class="container p-0 tab-pane active">
+                    <div class="list-message">
+
+                    </div>
+                </div>
+                <div id="listGroup" class="container p-0 tab-pane fade">
+                    <div class="list-message2">
+
+                    </div>
+                </div>
+            </div>
+
+            <hr class="d-block d-lg-none mt-1 mb-0">
+        </div>
+        <div class="col-12 col-lg-7 col-xl-9">
+
+            <div class="LoadThongTinTinNhan">
+
+            </div>
+
+            <div class="position-relative">
+                <div class="chat-messages p-4 LoadAllTinNhan">
+
+
+
+                </div>
+            </div>
+
+            <form autocomplete="off" class="chatbox flex-grow-0 pb-3 pt-0 px-4 border-top d-none">
+                <ul class="list-file m-0 p-2">
+                </ul>
+                <div class="input-group">
+                    <input type="text" id="message" data-id="" class="form-control" placeholder="Type your message">
+                    <label class="btn btn-image border-secondary text-secondary" for="attach"><i class="fa fa-file"></i></label>
+                    <input type="file" multiple id="attach">
+                    <label class="btn btn-image border-success text-success" for="image"><i class="fas fa-image"></i></label>
+                    <input type="file" accept="image/*" multiple id="image">
+                    <button class="btn text-primary border-primary" type="submit" data-id="" id="sendmessage"><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="lstUserModal">
+    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header row pb-0">
+                <div class="col-12 mb-2">
+                    <h4 class="modal-title text-info ">Tạo tin nhắn mới</h4>
+                </div>
+                <div class="form-group col-12">
+                    <input class="form-control text-find" type="text" placeholder="Nhập tên để tìm kiếm" />
+                </div>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="lstUser">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="find btn btn-outline-success"><i class="fas fa-search"></i> Tìm kiếm</button>
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="addUserToGroup">
+    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header row pb-0">
+                <div class="col-12 mb-2">
+                    <h4 class="modal-title text-info ">Thêm thành viên vào nhóm chat</h4>
+                </div>
+                <div class="form-group col-12">
+                    <input class="form-control text-find2" data-id="" type="text" placeholder="Nhập tên để tìm kiếm" />
+                </div>
+                <div class="form-group pl-1">
+                    <button type="button" data-id="" class="find2 btn btn-outline-info form-control ml-2"><i class="fas fa-search"></i> Tìm kiếm</button>
+                </div>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="lstUserToAddGroup">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" data-id="" class="addUsers btn btn-outline-success"><i class="fas fa-user-plus"></i> Thêm vào nhóm</button>
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="listUserInGroup">
+    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header row pb-0">
+                <div class="col-12 mb-2">
+                    <h4 class="modal-title text-info ">Danh sách thành viên trong nhóm chat</h4>
+                </div>
+                <div class="form-group col-12">
+                    <input class="form-control text-find3" data-id="" type="text" placeholder="Nhập tên để tìm kiếm" />
+                </div>
+                <div class="form-group pl-1">
+                    <button type="button" data-id="" class="find3 btn btn-outline-info form-control ml-2"><i class="fas fa-search"></i> Tìm kiếm</button>
+                </div>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="LoadUserInGroup">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" data-id="" class="deleteUser btn btn-outline-danger"><i class="fas fa-user-slash"></i> Xóa khỏi nhóm</button>
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Tạo nhóm chat</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TenNhom, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.EditorFor(model => model.TenNhom, new { htmlAttributes = new { @class = "form-control", @Required = "" } })
+                        @Html.ValidationMessageFor(model => model.TenNhom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        <div class="card border-info shadow-sm">
+                            <div class="card-header">Cập nhật hình ảnh nhóm</div>
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <img style="width: 200px; height:200px;" src="~/Images/NhomChat/avatar.png" class="avatar  img-thumbnail " alt="avatar">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="custom-file">
+                                    <input type="file" name="ImageFile" id="customFile" class="text-center center-block file-upload custom-file-input">
+                                    <label class="custom-file-label loadtext" for="customFile">Chọn file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="create btn btn-outline-success"><i class="fas fa-plus-circle"></i> Thêm mới</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="infoGroup">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thông tin nhóm chat</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                @Html.Hidden("Id2")
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TenNhom, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.Editor("TenNhom2", new { htmlAttributes = new { @class = "form-control", @Required = "" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "control-label col-md" })
+                    @Html.Hidden("Avatar2")
+                    <div class="col-md">
+                        <div class="card border-info shadow-sm">
+                            <div class="card-header">Cập nhật hình ảnh cho giảng viên</div>
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <img style="width: 200px; height:200px;" src="" class="avatar2  img-thumbnail " alt="avatar" />
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="custom-file">
+                                    <input type="file" name="ImageFile" id="customFile2" class="text-center center-block file-upload2 custom-file-input">
+                                    <label class="custom-file-label loadtext2" for="customFile2">Chọn file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="update btn btn-outline-success"><i class="far fa-edit"></i> Cập nhật</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delGroup">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn xóa nhóm chat này không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="form-actions no-color">
+                    <button type="button" value="" data-dismiss="modal" class="Xoa1 btn btn-outline-danger far fa-trash-alt"> Xóa </button>
+                </div>
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delMsg">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn xóa cuộc trò chuyện này không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="form-actions no-color">
+                    <button type="button" value="" data-dismiss="modal" class="Xoa2 btn btn-outline-danger far fa-trash-alt"> Xóa </button>
+                </div>
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="leaveGroup">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn rời khỏi nhóm chat này không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="form-actions no-color">
+                    <button type="button" value="" data-dismiss="modal" class="leave btn btn-outline-danger"><i class="fas fa-running"></i> Rời khỏi </button>
+                </div>
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .message-img {
+        max-width: 20rem;
+        max-height: 20rem;
+        margin-right: .5rem;
+    }
+
+        .message-img img {
+            width: 100%;
+            height: 100%;
+        }
+
+    .list-file {
+        width: 100%;
+        background: var(--txtColorSecond);
+        left: 0;
+        bottom: 100%;
+        display: flex;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+        .list-file.active {
+            padding: 1rem;
+        }
+
+        .list-file img {
+            width: 5rem;
+            height: 5rem;
+            object-fit: cover;
+            margin: 0 .5rem;
+        }
+
+        .list-file li {
+            position: relative;
+            list-style-type: none;
+        }
+
+    .file-input {
+        padding: 0.5rem;
+        color: var(--txtBlack);
+        box-shadow: 0rem .2rem .4rem rgba(1, 1, 1, 0.1);
+        margin-right: .5rem;
+        white-space: nowrap;
+    }
+
+    .delete-attach {
+        position: absolute;
+        right: -.2rem;
+        top: -.2rem;
+        color: blue;
+        cursor: pointer;
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.4rem;
+        text-align: center;
+        line-height: 2rem;
+        background: var(--mainColor);
+        opacity: .5;
+        border-radius: 50%;
+    }
+
+    .chatbox .btn {
+        background: transparent;
+        color: var(--btnColor);
+        width: auto;
+        margin: 0rem;
+    }
+
+    .chatbox input[type="file"], .register-form input[type="file"] {
+        display: none;
+    }
+
+    .chat-online {
+        color: #34ce57
+    }
+
+    .chat-offline {
+        color: #e4606d
+    }
+
+    .chat-messages {
+        display: flex;
+        flex-direction: column;
+        height: 510px;
+        max-height: 510px;
+        overflow-y: scroll;
+    }
+
+    .list-message {
+        display: flex;
+        flex-direction: column;
+        max-height: 550px;
+        overflow-y: scroll;
+    }
+
+    .list-message2 {
+        display: flex;
+        flex-direction: column;
+        max-height: 550px;
+        overflow-y: scroll;
+    }
+
+    .chat-message-left,
+    .chat-message-right {
+        display: flex;
+        flex-shrink: 0
+    }
+
+    .chat-message-left {
+        margin-right: auto
+    }
+
+    .chat-message-right {
+        flex-direction: row-reverse;
+        margin-left: auto
+    }
+
+    .py-3 {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .px-4 {
+        padding-right: 1.5rem !important;
+        padding-left: 1.5rem !important;
+    }
+
+    .flex-grow-0 {
+        flex-grow: 0 !important;
+    }
+
+    .border-top {
+        border-top: 1px solid #dee2e6 !important;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+</style>
+
+@section Script {
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/Scripts/Chat.js"></script>
+
+    <script>
+        var attachFile = document.getElementById("attach");
+        var imageFile = document.getElementById("image");
+        var file = document.querySelector(".list-file");
+        var listFile = [];
+        var typeFile = "image";
+        var deleteAttach = document.querySelectorAll(".delete-attach");
+
+        function setDeleteAttach() {
+            deleteAttach = document.querySelectorAll(".delete-attach");
+
+        }
+
+        function renderFile(typeFile) {
+            let listFileHTML = "";
+            let idx = 0;
+
+            if (typeFile == "image") {
+                for (const file of listFile) {
+                    listFileHTML += '<li><img src="' + URL.createObjectURL(file) + '" alt="Image file"><span data-idx="' + (idx) + '" onclick="deleteFile(' + idx + ')" class="delete-attach">X</span></li>';
+                    idx++;
+                }
+            } else {
+                for (const file of listFile) {
+                    listFileHTML += '<li><div class="file-input">' + file.name + '</div><span data-idx="' + (idx) + '" onclick="deleteFile(' + idx + ')" class="delete-attach">X</span></li>';
+                    idx++;
+                }
+            }
+
+            $('#message').focus();
+            if (listFile.length == 0) {
+                file.innerHTML = "";
+                file.classList.remove("active");
+            } else {
+                file.innerHTML = listFileHTML;
+                file.classList.add("active");
+            }
+
+            deleteAttach = document.querySelectorAll(".delete-attach");
+        }
+
+        attachFile.addEventListener("change", function (e) {
+            let filesInput = e.target.files;
+
+            for (const file of filesInput) {
+                listFile.push(file);
+            }
+
+            typeFile = "file";
+            renderFile("attach");
+
+            this.value = null;
+        });
+
+        imageFile.addEventListener("change", function (e) {
+            let filesImage = e.target.files;
+
+            for (const file of filesImage) {
+                listFile.push(file);
+                console.log(file);
+            }
+
+            typeFile = "image";
+
+            renderFile("image");
+
+            this.value = null;
+        });
+
+
+        function deleteFile(idx) {
+            if (!isNaN(idx)) listFile.splice(idx, 1);
+            renderFile(typeFile);
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            LoadListNguoiNhan();
+            LoadListNhomChat();
+
+            $.connection.chatHub.client.uploadfile = function (fromUser, message) {
+                if (fromUser == $('#message').attr('data-id') && isChatNhom == false) {
+                    $('.chat-messages').append(message);
+                    LoadListNguoiNhan();
+                }
+                else if (isNhom == false) {
+                    LoadListNguoiNhan();
+                }
+            };
+
+            $('.chatbox').submit(function (e) {
+                let message = $('#message').val();
+                let toUserId = $('#message').attr('data-id');
+                if (message.trim() != '') {
+                    $.ajax({
+                        url: '/Chat/SendMessage',
+                        type: 'POST',
+                        dataType: 'html',
+                        data: { toUserId: toUserId, message: message, isChatNhom: isChatNhom },
+                        async: true,
+                        success: function (data) {
+                            $('.LoadAllTinNhan').append(data);
+                            $('#message').val('').focus();
+                        },
+                        complete: function () {
+                            if (isChatNhom == true) {
+                                LoadListNhomChat();
+                            }
+                            else {
+                                LoadListNguoiNhan();
+                            }
+                        }
+                    });
+                }
+                if (listFile.length > 0) {
+                    var formData = new FormData();
+                    formData.append("toUserId", toUserId);
+                    formData.append("isChatNhom", isChatNhom);
+                    for (i = 0; i < listFile.length; i++) {
+                        formData.append(listFile[i].name, listFile[i]);
+                    }
+                    $.ajax({
+                        url: '/Chat/UploadFiles',
+                        type: 'POST',
+                        dataType: 'html',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        async: true,
+                        success: function (data) {
+                            $('.LoadAllTinNhan').append(data);
+                            $('#message').val('').focus();
+                            listFile = [];
+                            renderFile();
+                        },
+                        complete: function () {
+                            if (isChatNhom == true) {
+                                LoadListNhomChat();
+                            }
+                            else {
+                                LoadListNguoiNhan();
+                            }
+                        }
+                    });
+                }
+                e.preventDefault();
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+
+            var readURL = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.avatar').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $(".file-upload").on('change', function () {
+                readURL(this);
+            });
+
+            var readURL2 = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.avatar2').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+
+            $(".file-upload2").on('change', function () {
+                readURL2(this);
+            });
+        });
+    </script>
+}
+

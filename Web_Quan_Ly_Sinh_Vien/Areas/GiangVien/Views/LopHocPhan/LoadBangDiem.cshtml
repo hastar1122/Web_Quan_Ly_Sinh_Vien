@@ -1,0 +1,101 @@
+﻿@*@model IEnumerable<Web_Quan_Ly_Sinh_Vien.ViewModels.BangDiemViewModel>*@
+@model IEnumerable<tblDiem>
+
+@{
+    int i = 1;
+    string DiemQT;
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="1%">
+                    STT
+                </th>
+                <th>
+                    Họ đệm
+                </th>
+                <th>
+                    Tên
+                </th>
+                <th>
+                    Mã sinh viên
+                </th>
+                <th>
+                    Lớp học
+                </th>
+                <th>
+                    Điểm điểm danh
+                </th>
+                <th>
+                    Điểm bài tập trung bình
+                </th>
+                <th>
+                    <span>Ghi chú</span>
+                </th>
+                <th>
+                    Điểm quá trình
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @i
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tblUser.Ho)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tblUser.Ten)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tblUser.MaSV)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tblUser.tblLop.TenLop)
+                        </td>
+                        <td class="text-center">
+                            @{
+                                if (item.DiemDD != null)
+                                {
+                                    <span>@Math.Round(double.Parse(Html.DisplayFor(modelItem => item.DiemDD).ToString()), 2)</span>
+                                }
+                            }
+                        </td>
+                        <td class="text-center">
+                            @{
+                                if (item.DiemBT != null)
+                                {
+                                    <span>@Math.Round(double.Parse(Html.DisplayFor(modelItem => item.DiemBT).ToString()), 2)</span>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(modelItem => item.GhiChu, new { @class = "GhiChu form-control border border-info", @style = "", @dataid = @item.MaSV, @id = "" })
+                        </td>
+                        <td width="10%">
+                            @{
+                                if (item.DIemQT != null)
+                                {
+                                    DiemQT = Math.Round(float.Parse(Html.DisplayFor(modelItem => item.DIemQT).ToString()), 2).ToString();
+                                }
+                                else
+                                {
+                                    DiemQT = null;
+                                }
+                            }
+                            @Html.TextBoxFor(modelItem => item.DIemQT, new { @class = "DiemQT form-control border border-danger text-center", @id = "", @dataid = @item.MaSV, @Value = DiemQT })
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+
+    </table>
+</div>

@@ -1,0 +1,942 @@
+﻿@model tblUser
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="LoadLopHoc">
+    @Html.Action("Details", "Lop", new { id = ViewBag.MaLop })
+</div>
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header py-3">
+        <div class="float-left mt-2">
+            <h5 class="m-0 text-primary">Danh sách sinh viên trong lớp học</h5>
+        </div>
+        <div class="float-right mb-n3 row">
+            <a data-toggle="modal" href="#addModal" class="openAddModal btn btn-primary btn-icon-split mr-2">
+                <span class="icon text-white">
+                    <i class="fas fa-plus-circle"></i>
+                </span>
+                <span class="text">Thêm mới</span>
+            </a>
+            <div>
+                @using (Html.BeginForm("ExportToExcel", "SinhVien", FormMethod.Get, new { @class = "formexport" }))
+                {
+                    <input name="LopHoc2" id="LopHoc2" type="hidden" value="" />
+                }
+                <a class="export btn btn-success"><i class="fas fa-download"></i> Export Excel</a>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#importModal"><i class="fas fa-upload"></i> Import Excel</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body LoadAllSinhVien">
+        @Html.Action("LoadAllSinhVien", "SinhVien", new { LopHoc = ViewBag.MaLop })
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thêm mới sinh viên</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Ho, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.EditorFor(model => model.Ho, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Ten, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.EditorFor(model => model.Ten, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                @Html.LabelFor(model => model.MaSV, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.EditorFor(model => model.MaSV, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            <div class="col-md">
+                                @Html.HiddenFor(model => model.MaLop, new { @class = "form-control", @Value = ViewBag.MaLop })
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.GioiTinh, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.DropDownList("GioiTinh", new SelectList(new[] { "Nam", "Nữ" }), "", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.NgaySinh, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email" })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CCCD, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.EditorFor(model => model.CCCD, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CCCD, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SDT, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.PasswordFor(model => model.MatKhau, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.GhiChu, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.TextAreaFor(model => model.GhiChu, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.GhiChu, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TrangThai, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(model => model.TrangThai, new { @checked = "checked" })
+                                    @Html.ValidationMessageFor(model => model.TrangThai, "", htmlAttributes: new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Anh, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="card border-info shadow-sm">
+                                <div class="card-header">Cập nhật hình ảnh cho sinh viên</div>
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <img src="~/Images/SinhVien/avatar_2x.png" class="avatar  img-thumbnail " alt="avatar">
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="custom-file">
+                                        <input type="file" name="ImageFile" id="customFile" class="text-center center-block file-upload custom-file-input">
+                                        <label class="custom-file-label loadtext" for="customFile">Chọn file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="create btn btn-outline-success"><i class="fas fa-plus-circle"></i> Thêm mới</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="infModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thông tin sinh viên</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            @Html.Hidden("Id2")
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Ho, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.Editor("Ho2", new { htmlAttributes = new { @Value = ViewBag.MaSV, @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Ten, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.Editor("Ten2", new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                @Html.LabelFor(model => model.MaSV, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.Editor("MaSV2", new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+
+                            <div class="col-md">
+                                @Html.Hidden("MaLop2", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.GioiTinh, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.DropDownList("GioiTinh2", new SelectList(new[] { "Nam", "Nữ" }), "", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.NgaySinh, htmlAttributes: new { @class = "control-label col-md" })
+                                <div class="col-md">
+                                    @Html.TextBox("NgaySinh2", null, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.Editor("Email2", new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CCCD, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.Editor("CCCD2", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SDT, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.Editor("SDT2", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md input-group">
+                                @Html.Editor("MatKhau2", new { htmlAttributes = new { @readonly = "", @class = "form-control rounded", @type = "Password" } })
+                                <button class="openResetPassModal btn btn-warning ml-3" data-id="" data-toggle="modal" data-target="#resetPassModal"> <i class="fas fa-sync-alt"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.GhiChu, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                @Html.TextArea("GhiChu2", new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TrangThai, htmlAttributes: new { @class = "control-label col-md" })
+                            <div class="col-md">
+                                <div class="checkbox">
+                                    @Html.CheckBox("TrangThai2", new { @checked = "checked" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.Label("Hình ảnh", htmlAttributes: new { @class = "control-label col-md" })
+                            @Html.Hidden("Anh2")
+                            <div class="card border-info shadow-sm">
+                                <div class="card-header">Cập nhật hình ảnh cho sinh viên</div>
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <img src="" class="avatar2  img-thumbnail " alt="avatar" />
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="custom-file">
+                                        <input type="file" name="ImageFile" id="customFile2" class="text-center center-block file-upload2 custom-file-input">
+                                        <label class="custom-file-label loadtext2" for="customFile2">Chọn file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="update btn btn-outline-success"><i class="far fa-edit"></i> Cập nhật</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delModal">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn xóa sinh viên này không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="form-actions no-color">
+                    <button type="button" value="" data-dismiss="modal" class="Xoa btn btn-outline-danger far fa-trash-alt"> Xóa </button>
+                </div>
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="resetPassModal">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn reset password của sinh viên này không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="form-actions no-color">
+                    <button type="button" value="" data-dismiss="modal" class="Reset btn btn-outline-warning"><i class="fas fa-sync-alt"></i> Reset </button>
+                </div>
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="importModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="mx-auto"><h4 class="modal-title text-dark ml-4">Thêm danh sách sinh viên</h4></div>
+                <button type="button" class="close ml-0" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <a class="text-primary" href="@Url.Action("ExportFileMau","SinhVien")">Download file mẫu tại đây</a>
+                <div class="mark px-4 pt-4 mt-2">
+                    <dl>
+                        <dt class="mb-2 text-warning"><i class="fas fa-exclamation-triangle"></i> Một số chú ý khi nhập dữ liệu:</dt>
+                        <dd> - Nhập chính xác thông tin lớp học nếu có </dd>
+                        <dd> - Dữ liệu vào không nên chứa ký tự đặc biệt </dd>
+                        <dd> - Hạn chế để dữ liệu trống </dd>
+                        <dd class="text-danger"> - Email sinh viên không được phép trùng nhau hoặc để trống </dd>
+                        <dd> - Cần thực hiện điền thông tin theo file mẫu</dd>
+                    </dl>
+                    <form class="row formimport">
+                        <div class="form-group col-md-10">
+                            <input class="form-control" type="file" required id="fileImport" name="fileImport" />
+                            <label class="font-italic text-info" for="fileImport">Click vào đây để chọn file</label>
+                        </div>
+                        <div class="form-group col-md-2 p-0">
+                            <button type="button" class="btn btn-outline-success" onclick="uploadFile()"> <i class="fas fa-file-upload"></i> Import</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="infLopModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thông tin lớp học</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                @Html.Hidden("ID3")
+                <div class="form-group">
+                    @Html.Label("Ngành học", htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.DropDownList("MaNganh2", null, "", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Tên lớp", htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.Editor("TenLop2", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Khóa học", htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.Editor("Khoa2", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Năm học", htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.Editor("NamHoc2", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="updateLop btn btn-outline-success"><i class="far fa-edit"></i> Cập nhật</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script {
+
+
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(".nav-3").addClass("show");
+
+        // Mở modal delete sinh viên
+        $('body').on('click', '.delete', function () {
+            $('#delModal').modal();
+            $(".Xoa").val($(this).attr('data-id'));
+        });
+
+        $('body').on('click', '.informationLop', function () {
+            $('#infLopModal').modal();
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: '@Url.Action("LoadLop", "Lop")',
+                data: { id: id },
+                dataType: 'json',
+                type: 'POST',
+                success: function (data) {
+                    $("#ID3").val(data.ID);
+                    $('#MaNganh2').val(data.MaNganh);
+                    $('#TenLop2').val(data.TenLop);
+                    $('#Khoa2').val(data.Khoa);
+                    $('#NamHoc2').val(data.NamHoc);
+                },
+                error: function () {
+                    alert("Đã có lỗi xảy ra");
+                }
+            });
+        });
+
+        $(".updateLop").click(function () {
+            var id = $("#ID3").val();
+            var formData = new FormData;
+            formData.append('ID', $("#ID3").val());
+            formData.append("MaNganh", $("#MaNganh2").val());
+            formData.append("TenLop", $("#TenLop2").val());
+            formData.append("Khoa", $("#Khoa2").val());
+            formData.append("NamHoc", $("#NamHoc2").val());
+            $.ajax({
+                async: true,
+                url: '@Url.Action("Edit", "Lop")',
+                contentType: false,
+                processData: false,
+                data: formData,
+                dataType: 'json',
+                type: 'POST',
+                success: function (data) {
+                    if (data.status == true) {
+                        $.ajax({
+                            url: '@Url.Action("Details", "Lop")',
+                            data: { id: id },
+                            dataType: 'html',
+                            type: 'GET',
+                            success: function (data) {
+                                $('.LoadLopHoc').html(data);
+                            }
+                        });
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.success("Chỉnh sửa thành công");
+                        $('#infLopModal').modal('hide');
+                    }
+                    else {
+                        alert(data.status);
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning('Chỉnh sửa không thành công');
+                    }
+                },
+                error: function () {
+                    toastr.options.positionClass = "toast-bottom-right";
+                    toastr.warning('Chỉnh sửa không thành công');
+                }
+
+            });
+        });
+
+        // Add sinh viên
+        $('body').on('click', '.create', function () {
+            var formdata = new FormData();
+            formdata.append("Ho", $("#Ho").val());
+            formdata.append("Ten", $("#Ten").val());
+            formdata.append("MaSV", $("#MaSV").val());
+            formdata.append("MaLop", $("#MaLop").val());
+            formdata.append("GioiTinh", $("#GioiTinh").val());
+            formdata.append("NgaySinh", $("#NgaySinh").val());
+            formdata.append("Email", $("#Email").val());
+            formdata.append("CCCD", $("#CCCD").val());
+            formdata.append("SDT", $("#SDT").val());
+            formdata.append("MatKhau", $("#MatKhau").val());
+            formdata.append("GhiChu", $("#GhiChu").val());
+            formdata.append("TrangThai", $("#TrangThai").val());
+            formdata.append("ImageFile", $("#customFile").get(0).files[0]);
+            $.ajax({
+                async: true,
+                url: '@Url.Action("Create", "SinhVien")',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                type: 'POST',
+                success: function (data) {
+                    if (data.status == true) {
+                        LoadAllSinhVien();
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.success("Thêm mới thành công");
+                        $('#addModal').modal('hide');
+                        ResetValueAfterAdd();
+                    }
+                    else {
+                        alert(data.status);
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning('Thêm mới không thành công');
+                    }
+                },
+                error: function () {
+                    toastr.options.positionClass = "toast-bottom-right";
+                    toastr.warning('Thêm mới không thành công');
+                }
+            });
+        });
+
+        // Reset data sau khi add
+        function ResetValueAfterAdd() {
+            $("#Ho").val('');
+            $("#Ten").val('');
+            $("#MaSV").val('');
+            $("#GioiTinh").val('');
+            $("#NgaySinh").val('');
+            $("#Email").val('');
+            $("#CCCD").val('');
+            $("#SDT").val('');
+            $("#MatKhau").val('');
+            $("#GhiChu").val('');
+            $("#customFile").val('');
+            $('.avatar').attr('src', "/Images/SinhVien/avatar_2x.png");
+            $(".loadtext").html("Chọn file");
+        };
+
+        // Xóa sinh viên
+        $('body').on('click', '.Xoa', function () {
+            var MaSV = $(".Xoa").val();
+            $.ajax({
+                async: true,
+                url: '@Url.Action("Delete", "SinhVien")',
+                data: { id: MaSV },
+                dataType: 'json',
+                type: "POST",
+                success: function (data) {
+                    if (data.status == true) {
+                        LoadAllSinhVien();
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.success("Xóa thành công");
+                    }
+                    if (data.status == false) {
+                        alert("Không thể xóa giảng viên này");
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning("Xóa không thành công");
+                    }
+                },
+                error: function () {
+                    toastr.options.positionClass = "toast-bottom-right";
+                    toastr.warning('Xóa không thành công');
+                }
+            });
+        });
+
+        // Mở modal thông tin sinh viên
+        $('body').on('click', '.information', function () {
+            $('#infModal').modal();
+            var MaSV = $(this).attr('data-id');
+            LoadSinhVien(MaSV);
+        });
+
+        // Updata sinh viên
+        $(".update").click(function () {
+            var formdata = new FormData();
+            formdata.append("Id", $("#Id2").val());
+            formdata.append("Ho", $("#Ho2").val());
+            formdata.append("Ten", $("#Ten2").val());
+            formdata.append("MaSV", $("#MaSV2").val());
+            formdata.append("MaLop", $("#MaLop2").val());
+            formdata.append("GioiTinh", $("#GioiTinh2").val());
+            formdata.append("NgaySinh", $("#NgaySinh2").val());
+            formdata.append("Email", $("#Email2").val());
+            formdata.append("CCCD", $("#CCCD2").val());
+            formdata.append("SDT", $("#SDT2").val());
+            formdata.append("MatKhau", $("#MatKhau2").val());
+            formdata.append("GhiChu", $("#GhiChu2").val());
+            if ($('#TrangThai2').is(":checked")) {
+                formdata.append("TrangThai", true);
+            }
+            else {
+                formdata.append("TrangThai", false);
+            }
+            formdata.append("Anh", $("#Anh2").val());
+            formdata.append("ImageFile", $("#customFile2").get(0).files[0]);
+            $.ajax({
+                async: true,
+                url: '@Url.Action("Edit", "SinhVien")',
+                contentType: false,
+                processData: false,
+                data: formdata,
+                dataType: 'json',
+                type: 'POST',
+                success: function (data) {
+                    if (data.status == true) {
+                        LoadAllSinhVien();
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.success("Chỉnh sửa thành công");
+                        $('#infModal').modal('hide');
+                    }
+                    else {
+                        alert(data.status);
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning('Chỉnh sửa không thành công');
+                    }
+                },
+                error: function () {
+                    toastr.options.positionClass = "toast-bottom-right";
+                    toastr.warning('Chỉnh sửa không thành công');
+                }
+
+            });
+        });
+
+        // Mở modal reset Password sinh viên
+        $('body').on('click', '.openResetPassModal', function () {
+
+            $("#resetPassModal").modal({ backdrop: false });
+            $(".Reset").val($(this).attr('data-id'));
+        });
+
+        // Reset password sinh viên
+        $('body').on('click', '.Reset', function () {
+            var MaSV = $(".Reset").val();
+            $.ajax({
+                async: true,
+                url: '@Url.Action("ResetPassword", "Sinhvien")',
+                data: { MaSV: MaSV },
+                dataType: 'json',
+                type: "POST",
+                success: function (data) {
+                    if (data.status == true) {
+                        LoadSinhVien(MaSV);
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.success("Reset password thành công");
+                    }
+                },
+                error: function () {
+                    toastr.options.positionClass = "toast-bottom-right";
+                    toastr.warning('Reset password không thành công');
+                }
+            });
+        });
+
+        // Thay đổi trạng thái tài khoản của sinh viên
+        $('body').on('click', '.btn-active', function () {
+            var btn = $(this);
+            var MaSV = btn.attr('data-id');
+            $.ajax({
+                url: '@Url.Action("ChangeStatus", "SinhVien")',
+                data: { id: MaSV },
+                dataType: "json",
+                type: "POST",
+                success: function (response) {
+                    console.log(response.status)
+                    if (response.status == true) {
+                        btn.text("Hoạt động");
+                        btn.addClass("bg-success");
+                        btn.removeClass("bg-danger");
+                    }
+                    else {
+                        btn.text("Khóa");
+                        btn.addClass("bg-danger");
+                        btn.removeClass("bg-success");
+                    }
+                }
+            });
+        });
+
+        // Load thông tin sinh viên
+        function LoadSinhVien(MaSV) {
+            $.ajax({
+                url: '@Url.Action("LoadSinhVien", "SinhVien")',
+                data: { MaSV: MaSV },
+                dataType: 'json',
+                type: 'POST',
+                success: function (data) {
+                    $.each(data.data, function (index, row) {
+                        $("#Id2").val(row.Id);
+                        $("#Ho2").val(row.Ho);
+                        $("#Ten2").val(row.Ten);
+                        $("#MaSV2").val(row.MaSV);
+                        $("#MaLop2").val(row.MaLop);
+                        $("#GioiTinh2").val(row.GioiTinh);
+                        $("#NgaySinh2").val(row.NgaySinh);
+                        $("#Email2").val(row.Email);
+                        $("#CCCD2").val(row.CCCD);
+                        $("#SDT2").val(row.SDT);
+                        $("#MatKhau2").val(row.MatKhau);
+                        $("#GhiChu2").val(row.GhiChu);
+                        $(".openResetPassModal").attr("data-id", row.Id);
+                        if (row.TrangThai == false) {
+                            $('#TrangThai2').removeAttr('checked');
+                        }
+                        else {
+                            $('#TrangThai2').attr('checked','checked');
+                        }
+                        if (row.Anh != '') {
+                            $(".avatar2").attr('src', row.Anh);
+                            $("#Anh2").val(row.Anh);
+                            $(".loadtext2").html(row.Anh.split('/').pop());
+                        }
+                        else {
+                            var link = '@Url.Content("~/Images/SinhVien/avatar_2x.png")';
+                            $(".avatar2").attr('src', link);
+                            $(".loadtext2").html('Chọn file');
+                            $("#Anh2").val(null);
+                        }
+                    });
+                },
+                error: function () {
+                    alert("Đã có lỗi xảy ra");
+                }
+            });
+        };
+
+        // Load thông tin tất cả các sinh viên
+        function LoadAllSinhVien() {
+            $('#dataTable').DataTable().clear();
+            $('.table-responsive').remove();
+            $.ajax({
+                url: '@Url.Action("LoadAllSinhVien", "SinhVien")',
+                data: { LopHoc: @ViewBag.MaLop},
+                dataType: 'html',
+                type: 'GET',
+                success: function (data) {
+                    $('.LoadAllSinhVien').html(data);
+                    $('#dataTable').DataTable().draw();
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                error: function () {
+                    alert("Đã có lỗi xảy ra");
+                },
+            });
+        };
+
+        // Export to Excel
+        $('body').on('click', '.export', function () {
+            $('#LopHoc2').val(@ViewBag.MaLop);
+            $('.formexport').submit();
+        });
+
+        // Import form Excel
+        function uploadFile() {
+            var data = new FormData();
+            var file = $("#fileImport").get(0).files;
+
+            if (file.length > 0) {
+                data.append("UploadedFile", file[0]);
+                data.append("id", @ViewBag.MaLop);
+                $.ajax({
+                    url: '@Url.Action("ImportFromExcel","SinhVien")',
+                    type: 'POST',
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == true) {
+                            LoadAllSinhVien();
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.success("Thêm mới thành công");
+                            $('#importModal').modal('hide');
+                            $("#fileImport").val('');
+                        }
+                        else {
+                            alert(data.status);
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.warning('Thêm mới không thành công');
+                        }
+                        $('.formimport').trigger("reset");
+                    }
+                });
+            }
+            else {
+                alert("Bạn chưa chọn file");
+            }
+        };
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+
+            var readURL = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.avatar').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+
+            $(".file-upload").on('change', function () {
+                readURL(this);
+            });
+
+            var readURL2 = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.avatar2').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+
+            $(".file-upload2").on('change', function () {
+                readURL2(this);
+            });
+        });
+    </script>
+}

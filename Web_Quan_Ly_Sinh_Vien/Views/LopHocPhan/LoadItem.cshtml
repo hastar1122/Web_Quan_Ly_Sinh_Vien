@@ -1,0 +1,25 @@
+﻿@model tblLopHocPhan
+
+<h2 class="text-info">@Model.TenLHP</h2>
+<hr />
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link item-1" href="@Url.Action("Details","LopHocPhan", new { id = Model.Id})"><i class="fas fa-info-circle"></i> Thông tin</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link item-2" href="@Url.Action("BangDiem","LopHocPhan", new { id = Model.Id})"><i class="fas fa-table"></i> Bảng điểm</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link item-3" href="@Url.Action("Index", "BaiTap", new { id = Model.Id})"><i class="fas fa-book"></i> Bài tập</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link item-4" href="@Url.Action("Index","DiemDanh",new { id = Model.Id})"><i class="fas fa-calendar-check"></i> Điểm danh</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link item-5" href="@Url.Action("Index","ThaoLuan",new { id = Model.Id})"><i class="fas fa-comments"></i> Thảo luận</a>
+    </li>
+</ul>
+
+<br>

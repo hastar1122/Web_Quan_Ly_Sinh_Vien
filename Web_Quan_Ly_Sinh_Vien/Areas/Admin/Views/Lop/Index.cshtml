@@ -1,0 +1,374 @@
+﻿@model tblLop
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="form-group mb-0 col-md-4">
+        @Html.DropDownList("NganhHoc", null, "--Chọn ngành học--", new { @class = "form-control" })
+    </div>
+    <div class="form-group mb-0 col-md-4">
+        @Html.DropDownList("KhoaHoc", null, "--Chọn khóa học--", new { @class = "form-control " })
+    </div>
+</div>
+
+<hr />
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header py-3">
+        <div class="float-left mt-2">
+            <h5 class="m-0 font-weight-bold text-primary">Danh sách các lớp học</h5>
+        </div>
+        <div class="float-right mb-n3">
+            <a data-toggle="modal" href="#addModal" class="btn btn-primary mb-3 btn-icon-split">
+                <span class="icon text-white">
+                    <i class="fas fa-plus-circle"></i>
+                </span>
+                <span class="text">Thêm mới</span>
+            </a>
+        </div>
+    </div>
+    <div class="card-body LoadAllLop">
+        @Html.Action("LoadAllLop", "Lop")
+    </div>
+    <div class="card-footer">
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thêm mới lớp học</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MaNganh, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.DropDownListFor(model => model.MaNganh, null, "", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MaNganh, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TenLop, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.EditorFor(model => model.TenLop, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TenLop, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Khoa, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.EditorFor(model => model.Khoa, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Khoa, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NamHoc, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.EditorFor(model => model.NamHoc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NamHoc, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="create btn btn-outline-success"><i class="fas fa-plus-circle"></i> Thêm mới</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn lớp học này không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="form-actions no-color">
+                    <button type="button" value="" data-dismiss="modal" class="Xoa btn btn-outline-danger far fa-trash-alt"> Xóa </button>
+                </div>
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="infModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thông tin lớp học</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                @Html.Hidden("ID2")
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MaNganh, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.DropDownList("MaNganh2", null, "", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TenLop, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.Editor("TenLop2", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Khoa, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.Editor("Khoa2", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NamHoc, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.Editor("NamHoc2", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="update btn btn-outline-success"><i class="far fa-edit"></i> Cập nhật</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Script {
+
+
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $(".nav-3").addClass("show");
+
+            $('body').on('click', '.delete', function () {
+                $('#delModal').modal();
+                $(".Xoa").val($(this).attr('data-id'));
+            });
+
+            $('body').on('click', '.create', function () {
+                var formData = new FormData;
+                formData.append("MaNganh", $("#MaNganh").val());
+                formData.append("TenLop", $("#TenLop").val());
+                formData.append("Khoa", $("#Khoa").val());
+                formData.append("NamHoc", $("#NamHoc").val());
+                $.ajax({
+                    async: true,
+                    url: '@Url.Action("Create", "Lop")',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == true) {
+                            LoadAllLop();
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.success("Thêm mới thành công");
+                            $('#addModal').modal('hide');
+                            $("#MaNganh").val('');
+                            $("#TenLop").val('');
+                            $("#Khoa").val('');
+                            $("#NamHoc").val('');
+                        }
+                        else {
+                            alert(data.status);
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.warning('Thêm mới không thành công');
+                        }
+                    },
+                    error: function () {
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning('Thêm mới không thành công');
+                    }
+                });
+            });
+
+            $('body').on('click', '.Xoa', function () {
+                var id = $(".Xoa").val();
+                $.ajax({
+                    async: true,
+                    url: '@Url.Action("Delete", "Lop")',
+                    data: { id: id },
+                    dataType: 'json',
+                    type: "POST",
+                    success: function (data) {
+                        if (data.status == true) {
+                            LoadAllLop();
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.success("Xóa thành công");
+                        }
+                        if (data.status == false) {
+                            alert("Không thể xóa học phần này");
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.warning("Xóa không thành công");
+                        }
+                    },
+                    error: function () {
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning('Xóa không thành công');
+                    }
+                });
+            });
+
+            $(".update").click(function () {
+                var formData = new FormData;
+                formData.append('ID', $("#ID2").val());
+                formData.append("MaNganh", $("#MaNganh2").val());
+                formData.append("TenLop", $("#TenLop2").val());
+                formData.append("Khoa", $("#Khoa2").val());
+                formData.append("NamHoc", $("#NamHoc2").val());
+                $.ajax({
+                    async: true,
+                    url: '@Url.Action("Edit", "Lop")',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == true) {
+                            LoadAllLop();
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.success("Chỉnh sửa thành công");
+                            $('#infModal').modal('hide');
+                        }
+                        else {
+                            alert(data.status);
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.warning('Chỉnh sửa không thành công');
+                        }
+                    },
+                    error: function () {
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning('Chỉnh sửa không thành công');
+                    }
+
+                });
+            });
+
+            $('body').on('click', '.information', function () {
+                $('#infModal').modal();
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url: '@Url.Action("LoadLop", "Lop")',
+                    data: { id: id },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        $("#ID2").val(data.ID);
+                        $('#MaNganh2').val(data.MaNganh);
+                        $('#TenLop2').val(data.TenLop);
+                        $('#Khoa2').val(data.Khoa);
+                        $('#NamHoc2').val(data.NamHoc);
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    }
+                });
+            });
+
+            // Lọc danh sách lớp học
+            $('#NganhHoc, #KhoaHoc').on('change', function () {
+                var MaNganh = $('#NganhHoc').val();
+                var Khoa = $('#KhoaHoc').val();
+                $('#dataTable').DataTable().clear();
+                $('.table-responsive').remove();
+                $.ajax({
+                    url: '@Url.Action("LoadAllLop", "Lop")',
+                    data: { MaNganh: MaNganh, Khoa: Khoa },
+                    dataType: "html",
+                    type: 'GET',
+                    success: function (data) {
+                        $('.LoadAllLop').html(data);
+                        $('#dataTable').DataTable().draw();
+                        $('[data-toggle="tooltip"]').tooltip();
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+                });
+            });
+
+            function LoadAllLop() {
+                $('#dataTable').DataTable().clear();
+                $('.table-responsive').remove();
+                $.ajax({
+                    url: '@Url.Action("LoadAllLop", "Lop")',
+                    dataType: 'html',
+                    type: 'GET',
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        $('.LoadAllLop').html(data);
+                        $('#dataTable').DataTable().draw();
+                        $('[data-toggle="tooltip"]').tooltip();
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+            });
+            }
+        });
+    </script>
+}
+

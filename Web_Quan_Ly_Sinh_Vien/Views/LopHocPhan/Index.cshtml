@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSV.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-11">
+        <div class="row ">
+            <div class="form-group mb-0 col-md-3">
+                @Html.DropDownList("HocPhan", null, "--Chọn học phần--", new { @class = "form-control " })
+            </div>
+            <div class="form-group mb-0 col-md-3">
+                @Html.DropDownList("NamHoc", null, "--Chọn năm học--", new { @class = "form-control " })
+            </div>
+            <div class="form-group mb-0 col-md-3">
+                @Html.DropDownList("HocKy", null, "--Chọn học kỳ--", new { @class = "form-control" })
+            </div>
+            <div class="form-group mb-0 col-md-3">
+                @Html.DropDownList("TrangThai", new SelectList(new[] { "Đang tham gia", " Đã hoàn thành" }), "--Chọn trạng thái--", new { @class = "form-control " })
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-1 float-right dropleft">
+        <button type="button" class="btn btn-info " data-toggle="dropdown">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="dropdown-menu dropleft">
+            <a class="dropdown-item change-view">Thay đổi dạng xem</a>
+        </div>
+    </div>
+</div>
+<hr />
+
+<div class="LoadAllLopHocPhan">
+    @Html.Action("LoadAllLopHocPhan1", "LopHocPhan")
+</div>
+
+@section Script {
+
+
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        var view = 1;
+
+        // Lọc danh sách lớp học phần
+        $('#HocKy, #HocPhan, #NamHoc, #TrangThai').on('change', function () {
+            var HocKy = $('#HocKy').val();
+            var HocPhan = $('#HocPhan').val();
+            var NamHoc = $('#NamHoc').val();
+            var TrangThai = $('#TrangThai').val();
+            if (view == 1) {
+                $('#dataTable').DataTable().clear();
+                $('.LoadAllLopHocPhan').empty();
+                $.ajax({
+                    url: '@Url.Action("LoadAllLopHocPhan1", "LopHocPhan")',
+                    data: { HocPhan: HocPhan, NamHoc: NamHoc, HocKy: HocKy, TrangThai: TrangThai },
+                    dataType: "html",
+                    type: 'GET',
+                    success: function (data) {
+                        $('.LoadAllLopHocPhan').html(data);
+                        $('#dataTable').DataTable().draw();
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    }
+                });
+            }
+            else {
+                $('.LoadAllLopHocPhan').empty();
+                $.ajax({
+                    url: '@Url.Action("LoadAllLopHocPhan2", "LopHocPhan")',
+                    data: { HocPhan: HocPhan, NamHoc: NamHoc, HocKy: HocKy, TrangThai: TrangThai },
+                    dataType: 'html',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.LoadAllLopHocPhan').html(data);
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+                });
+            }
+        });
+
+        // Thay đổi view
+        $('.change-view').on('click', function () {
+            var HocKy = $('#HocKy').val();
+            var HocPhan = $('#HocPhan').val();
+            var NamHoc = $('#NamHoc').val();
+            var TrangThai = $('#TrangThai').val();
+            if (view == 2) {
+                view = 1;
+                $('.LoadAllLopHocPhan').empty();
+                $.ajax({
+                    url: '@Url.Action("LoadAllLopHocPhan1", "LopHocPhan")',
+                    data: { HocPhan: HocPhan, NamHoc: NamHoc, HocKy: HocKy, TrangThai: TrangThai },
+                    dataType: "html",
+                    type: 'GET',
+                    success: function (data) {
+                        $('.LoadAllLopHocPhan').html(data);
+                        $('#dataTable').DataTable().draw();
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    }
+                });
+            }
+            else {
+                view = 2;
+                $('#dataTable').DataTable().clear();
+                $('.LoadAllLopHocPhan').empty();
+                $.ajax({
+                    url: '@Url.Action("LoadAllLopHocPhan2", "LopHocPhan")',
+                    data: { HocPhan: HocPhan, NamHoc: NamHoc, HocKy: HocKy, TrangThai: TrangThai },
+                    dataType: 'html',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.LoadAllLopHocPhan').html(data);
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+                });
+            }
+        });
+
+    </script>
+}
+

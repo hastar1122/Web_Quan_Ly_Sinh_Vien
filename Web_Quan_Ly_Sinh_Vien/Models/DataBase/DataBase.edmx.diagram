@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a087df33b22c4211bf3d6ac76f1cb5d2" Name="Diagram1">
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblBaiTap" Width="1.5" PointX="12.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblBuoiDiemDanh" Width="1.5" PointX="12.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblChiTietNhomChat" Width="1.5" PointX="7.5" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblDiem" Width="1.5" PointX="7.5" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblDiemDanh" Width="1.5" PointX="7.5" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblHocPhan" Width="1.5" PointX="8.25" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblLop" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblLopHocPhan" Width="1.5" PointX="10.5" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblNganhHoc" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblNhomChat" Width="1.5" PointX="8.125" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblNopBaiTap" Width="1.5" PointX="15" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblTinNhan" Width="1.5" PointX="10.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblUser" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblBaiTap_tblLopHocPhan" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblNopBaiTap_tblBaiTap" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblBuoiDiemDanh_tblLopHocPhan" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblDiemDanh_tblBuoiDiemDanh" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblChiTietNhomChat_tblNhomChat" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblChiTietNhomChat_tblUser" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblDiem_tblLopHocPhan" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblDiem_tblUser" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblDiemDanh_tblUser" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblLopHocPhan_tblHocPhan" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblLop_tblNganhHoc" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblUser_tblLop" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblLopHocPhan_tblNganhHoc" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblLopHocPhan_tblUser" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblUser_tblNganhHoc" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblTinNhan_tblNhomChat" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblNopBaiTap_tblUser" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblTinNhan_tblUser" ManuallyRouted="false" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblTinNhan_tblUser1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Web_Quan_Ly_Sinh_VienModel.tblFriend" Width="1.5" PointX="15.75" PointY="6.125" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblFriend_tblTinNhan" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblFriend_tblUser" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblFriend_tblUser1" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblNhomChat_tblTinNhan" />
+        <AssociationConnector Association="Web_Quan_Ly_Sinh_VienModel.FK_tblNhomChat_tblLopHocPhan" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

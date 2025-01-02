@@ -1,0 +1,402 @@
+﻿@model IEnumerable<tblDiem>
+
+@{
+    int i = 1;
+}
+
+@{
+    ViewBag.Title = "DanhSachSinhVienTrongLopHocPhan";
+    Layout = "~/Areas/GiangVien/Views/Shared/_LayoutGV.cshtml";
+}
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = @ViewBag.MaLHP })
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header">
+        <h5 class="text-primary float-left mt-2">Danh sách các sinh viên đăng ký lớp học phần</h5>
+        <div class="float-right dropleft">
+            <button type="button" class="btn btn-primary mb-3 btn-icon-split" data-toggle="dropdown">
+                <span class="icon text-white">
+                    <i class="fas fa-plus-circle"></i>
+                </span>
+                <span class="text">Thêm sinh viên</span>
+            </button>
+            <div class="dropdown-menu dropleft">
+                <a href="" class="dropdown-item" data-toggle="modal" data-target="#LopHocModal">Thêm theo lớp</a>
+                <div class="dropdown-divider"></div>
+                <a href="" class="dropdown-item" data-toggle="modal" data-target="#SinhVienModal">Thêm từng sinh viên</a>
+            </div>
+            <button type="button" class="btn btn-danger mb-3 btn-icon-split" data-toggle="modal" data-target="#delAllModal">
+                <span class="icon text-white">
+                    <i class="fas fa-trash-alt"></i>
+                </span>
+                <span class="text">Xóa tất cả</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="1%">
+                            STT
+                        </th>
+                        <th>
+                            <span>Mã sinh viên</span>
+                        </th>
+                        <th>
+                            <span>Họ đệm</span>
+                        </th>
+                        <th>
+                            <span>Tên</span>
+                        </th>
+                        <th>
+                            <span>Giới tính</span>
+                        </th>
+                        <th>
+                            <span>Ngày sinh</span>
+                        </th>
+                        <th>
+                            <span>Tên lớp</span>
+                        </th>
+                        <th>
+                            <span>Khóa</span>
+                        </th>
+                        <th>
+                            <span>Ghi chú</span>
+                        </th>
+                        <th width="50px">
+                            <span>Xóa</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center" width="1%">
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.MaSV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.Ho)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.Ten)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.GioiTinh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.NgaySinh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.tblLop.TenLop)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.tblLop.Khoa)
+                            </td>
+                            <td class="text-break">
+                                @Html.DisplayFor(modelItem => item.tblUser.GhiChu)
+                            </td>
+                            <td>
+                                <a class="delete btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" ma-sv="@item.tblUser.MaSV" data-id="@item.MaSV"><i class="far fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer">
+
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="SinhVienModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Thêm sinh viên theo lớp học</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            @using (Html.BeginForm("AddSinhVien", "LopHocPhan", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input name="MaLHP" id="MaLHP1" type="hidden" value="@ViewBag.MaLHP" />
+                    <div class="row">
+                        <div class="form-group col-md">
+                            @Html.DropDownList("NganhHoc2", null, "--Chọn ngành học--", new { @class = "form-control col-md" })
+                        </div>
+                        <div class="form-group col-md">
+                            @Html.DropDownList("Khoa2", null, "--Chọn khóa học--", new { @class = "form-control col-md" })
+                        </div>
+                        <div class="form-group col-md">
+                            @Html.DropDownList("LopHoc2", null, "--Chọn lớp học--", new { @class = "form-control col-md" })
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Danh sách các sinh viên</h6>
+                        </div>
+
+                        <div class="card-body DanhSachSinhVien">
+                            @Html.Action("DanhSachSinhVien", "LopHocPhan", new { MaLHP = ViewBag.MaLHP })
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <div class="form-actions no-color">
+                        <button type="submit" value="Thêm" class="btn btn-info "> <i class="fas fa-download"></i> Xác nhận </button>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"> Thoát </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="LopHocModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thêm sinh viên theo lớp học</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            @using (Html.BeginForm("AddSinhVienOfClass", "LopHocPhan", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input name="MaLHP" id="MaLHP2" type="hidden" value="@ViewBag.MaLHP" />
+                    <div class="form-group">
+                        @Html.DropDownList("NganhHoc", null, "--Chọn ngành học--", new { @class = "form-control col-md" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownList("Khoa", null, "--Chọn khóa học--", new { @class = "form-control col-md" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownList("LopHoc", null, "--Chọn lớp học--", new { @class = "form-control col-md", @Required = "" })
+                    </div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <div class="form-actions no-color">
+                        <button type="submit" value="Thêm" class="btn btn-info "> <i class="fas fa-download"></i> Xác nhận </button>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"> Thoát </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn xóa sinh viên này khỏi lớp học phần không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                @using (Html.BeginForm("DeleteSinhVienFromLopHocPhan", "LopHocPhan", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input name="MaLHP" id="MaLHP3" type="hidden" value="@ViewBag.MaLHP" />
+                    <input name="MaSV" id="MaSV1" type="hidden" value="" />
+                    <div class="form-actions no-color">
+                        <button type="submit" value="Xóa" class="btn btn-danger far fa-trash-alt"> Xóa </button>
+                    </div>
+                }
+                <button type="button" class="btn btn-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delAllModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning">Bạn có muốn xóa tất cả sinh viên này khỏi lớp học phần không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                @using (Html.BeginForm("DeleteAllSinhVienFromLopHocPhan", "LopHocPhan", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input name="MaLHP" id="MaLHP4" type="hidden" value="@ViewBag.MaLHP" />
+                    <div class="form-actions no-color">
+                        <button type="submit" value="Xóa" class="btn btn-danger far fa-trash-alt"> Xóa </button>
+                    </div>
+                }
+                <button type="button" class="btn btn-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Script {
+
+
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+
+            $('.item-2').addClass("active");
+
+            $('#dataTable2').DataTable();
+
+            // Load danh sách lớp trong modal add sinh viên theo lớp học
+            $("#Khoa, #NganhHoc").on('change', function () {
+                $("#LopHoc").empty();
+                var Khoa = $("#Khoa").val();
+                var MaNganh = $('#NganhHoc').val();
+                if (Khoa != -1) {
+                    $.ajax({
+                        url: '@Url.Action("LoadLopHoc1", "LopHocPhan")',
+                        data: { MaNganh: MaNganh, Khoa: Khoa,  },
+                        dataType: "json",
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(MaNganh, Khoa);
+                            var s = '<option value>--Chọn lớp học--</option>';
+                            $("#LopHoc").append(s);
+                            $.each(data.list, function (index, row) {
+                                $("#LopHoc").append("<option value= '" + row.ID + "'> " + row.TenLop + "</option>");
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Load danh sách sinh viên trong modal add từng sinh viên
+            $("#NganhHoc2, #Khoa2").on('change', function () {
+                $("#LopHoc2").empty();
+                $('#dataTable2').DataTable().clear();
+                $('.DanhSachSinhVien').empty();
+                var Khoa2 = $("#Khoa2").val();
+                var MaNganh2 = $('#NganhHoc2').val();
+                var MaLop2 = $('#LopHoc2').val();
+                var MaLHP2 = '@ViewBag.MaLHP';
+                $.ajax({
+                    async: true,
+                    url: '@Url.Action("DanhSachSinhVien", "LopHocPhan")',
+                    data: { MaLHP: MaLHP2, MaNganh: MaNganh2, Khoa: Khoa2, MaLop: MaLop2 },
+                    dataType: 'html',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.DanhSachSinhVien').html(data);
+                        $('#dataTable2').DataTable().draw();
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+                });
+                $.ajax({
+                    async: true,
+                    url: '@Url.Action("LoadLopHoc1", "LopHocPhan")',
+                    data: { MaNganh: MaNganh2, Khoa: Khoa2, },
+                    dataType: "json",
+                    type: 'GET',
+                    success: function (data) {
+                        var s = '<option value>--Chọn lớp học--</option>';
+                        $("#LopHoc2").append(s);
+                        $.each(data.list, function (index, row) {
+                            $("#LopHoc2").append("<option value= '" + row.ID + "'> " + row.TenLop + "</option>");
+                        });
+                    }
+                });
+
+            });
+
+            $("#LopHoc2").on('change', function () {
+                $('#dataTable2').DataTable().clear();
+                $('.DanhSachSinhVien').empty();
+                var Khoa2 = $("#Khoa2").val();
+                var MaNganh2 = $('#NganhHoc2').val();
+                var MaLop2 = $('#LopHoc2').val();
+                var MaLHP2 =  '@ViewBag.MaLHP';
+                $.ajax({
+                    async: true,
+                    url: '@Url.Action("DanhSachSinhVien", "LopHocPhan")',
+                    data: { MaLHP: MaLHP2, MaNganh: MaNganh2, Khoa: Khoa2, MaLop: MaLop2 },
+                    dataType: 'html',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.DanhSachSinhVien').html(data);
+                        $('#dataTable2').DataTable().draw();
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+                });
+            });
+
+            // Xóa sinh viên khỏi lớp học phần
+            $(".delete").click(function () {
+                var Id = $(this).attr('data-id');
+                var MaSV = $(this).attr('ma-sv');
+                $("#MaSV1").val(Id);
+                $(".text-wr").text("Bạn có muốn xóa sinh viên có mã là: " + MaSV + " khỏi lớp học phần không ?");
+            });
+        });
+    </script>
+}
+

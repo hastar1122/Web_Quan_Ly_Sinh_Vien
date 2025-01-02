@@ -1,0 +1,24 @@
+﻿@if (@TempData["success"] != null)
+{
+    <script src="~/Assets/vendor/jquery/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @*<script src="~/Assets/vendor/jquery/jquery.min.js"></script>*@
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+    <script type="text/javascript">
+        toastr.options.positionClass = "toast-bottom-right";
+        toastr.success("@TempData["success"]");
+    </script>
+}
+
+@if (@TempData["warning"] != null)
+{
+    <script src="~/Assets/vendor/jquery/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @*<script src="~/Assets/vendor/jquery/jquery.min.js"></script>*@
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+    <script type="text/javascript">
+        toastr.options.positionClass = "toast-bottom-right";
+        toastr.warning('@TempData["warning"]');
+    </script>
+}
+

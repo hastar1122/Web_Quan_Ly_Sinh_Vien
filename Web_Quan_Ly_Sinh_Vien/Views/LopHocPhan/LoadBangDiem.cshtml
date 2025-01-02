@@ -1,0 +1,42 @@
+﻿@*@model Web_Quan_Ly_Sinh_Vien.ViewModels.BangDiemViewModel*@
+@model tblDiem
+
+<tr class="table-info">
+    <td>
+        @Html.DisplayFor(modelItem => Model.tblUser.Ho)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.tblUser.Ten)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.tblUser.MaSV)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.tblUser.tblLop.TenLop)
+    </td>
+    <td class="text-center">
+        @{
+            if (Model.DiemDD != null)
+            {
+                <span>@Math.Round(double.Parse(Html.DisplayFor(modelItem => modelItem.DiemDD).ToString()), 2)</span>
+            }
+        }
+    </td>
+    <td class="text-center">
+        @{
+            if (Model.DiemBT != null)
+            {
+                <span>@Math.Round(double.Parse(Html.DisplayFor(modelItem => modelItem.DiemBT).ToString()), 2)</span>
+            }
+        }
+    </td>
+    <td class="text-center">
+        @{
+            if (Model.DIemQT != null)
+            {
+                <span>@Math.Round(double.Parse(Html.DisplayFor(modelItem => modelItem.DIemQT).ToString()), 2)</span>
+            }
+        }
+    </td>
+</tr>
+

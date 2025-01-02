@@ -1,0 +1,853 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSV.cshtml";
+}
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = @ViewBag.MaLHP })
+
+<div class="app shadow-sm mb-4 border-top">
+    <div class=" border border-info sidebar2 ">
+        <div class="header">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <input type="text" id="search" class="form-control my-3" placeholder="Search...">
+                </div>
+            </div>
+        </div>
+        <ul class="rooms list-group list-unstyle" id="room-list">
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="header align-content-between bg-light LoadThongTinBuoiThaoLuan">
+
+        </div>
+        <div class="chat-body">
+            <div class="chat-message LoadAllTinNhan">
+
+            </div>
+        </div>
+        <form autocomplete="off" class="chatbox  flex-grow-0 ">
+            <ul class="list-file m-0 p-2">
+            </ul>
+            <div class="chat-input">
+                <input autocomplete="off" id="message" data-id="" type="text" value="" placeholder="Type your message" />
+                <div class="actions d-flex align-items-center">
+
+                    <label class="btn btn-image  text-secondary" for="attach"><i class="fa fa-file"></i></label>
+                    <input type="file" multiple id="attach">
+                    <label class="btn btn-image  text-success" for="image"><i class="fas fa-image"></i></label>
+                    <input type="file" accept="image/*" multiple id="image">
+
+                    <button type="submit" class="btn ml-0 fas fa-paper-plane" id="btn-send-message"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="users-container">
+        <div class="header">
+            <h5 class="text-info">Danh sách sinh viên</h5>
+        </div>
+        <ul id="users-list" class="list-unstyled">
+        </ul>
+        <input type="text" id="search2" placeholder="Nhập tên để tìm kiếm" />
+    </div>
+</div>
+
+<style>
+
+    .rooms {
+        display: flex;
+        flex-direction: column;
+        max-height: 700px;
+        overflow-y: scroll;
+    }
+
+    #users-list {
+        display: flex;
+        flex-direction: column;
+        max-height: 700px;
+        overflow-y: scroll;
+    }
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    .message-img {
+        max-width: 20rem;
+        max-height: 20rem;
+        margin-right: .5rem;
+    }
+
+        .message-img img {
+            width: 100%;
+            height: 100%;
+        }
+
+    .list-file {
+        width: 100%;
+        background: var(--txtColorSecond);
+        left: 0;
+        bottom: 100%;
+        display: flex;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+        .list-file.active {
+            padding: 1rem;
+        }
+
+        .list-file img {
+            width: 5rem;
+            height: 5rem;
+            object-fit: cover;
+            margin: 0 .5rem;
+        }
+
+        .list-file li {
+            position: relative;
+            list-style-type: none;
+        }
+
+    .file-input {
+        padding: 0.5rem;
+        color: var(--txtBlack);
+        box-shadow: 0rem .2rem .4rem rgba(1, 1, 1, 0.1);
+        margin-right: .5rem;
+        white-space: nowrap;
+    }
+
+    .delete-attach {
+        position: absolute;
+        right: -.2rem;
+        top: -.2rem;
+        color: blue;
+        cursor: pointer;
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.4rem;
+        text-align: center;
+        line-height: 2rem;
+        background: var(--mainColor);
+        opacity: .5;
+        border-radius: 50%;
+    }
+
+    .chat-online {
+        color: #34ce57
+    }
+
+    .chat-offline {
+        color: #e4606d
+    }
+
+    .chat-messages {
+        display: flex;
+        flex-direction: column;
+        height: 510px;
+        max-height: 510px;
+        overflow-y: scroll;
+    }
+
+    .chat-message-left,
+    .chat-message-right {
+        display: flex;
+        flex-shrink: 0
+    }
+
+    .chat-message-left {
+        margin-right: auto
+    }
+
+    .chat-message-right {
+        flex-direction: row-reverse;
+        margin-left: auto
+    }
+
+    .py-3 {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .px-4 {
+        padding-right: 1.5rem !important;
+        padding-left: 1.5rem !important;
+    }
+
+    .flex-grow-0 {
+        flex-grow: 0 !important;
+    }
+
+    .border-top {
+        border-top: 1px solid #dee2e6 !important;
+    }
+</style>
+
+<style>
+    .message-img {
+        max-width: 20rem;
+        max-height: 20rem;
+        margin-right: .5rem;
+    }
+
+        .message-img img {
+            width: 100%;
+            height: 100%;
+        }
+
+    .list-file {
+        width: 100%;
+        background: var(--txtColorSecond);
+        left: 0;
+        bottom: 100%;
+        display: flex;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+        .list-file.active {
+            padding: 1rem;
+        }
+
+        .list-file img {
+            width: 5rem;
+            height: 5rem;
+            object-fit: cover;
+            margin: 0 .5rem;
+        }
+
+        .list-file li {
+            position: relative;
+            list-style-type: none;
+        }
+
+    .file-input {
+        padding: 0.5rem;
+        color: var(--txtBlack);
+        box-shadow: 0rem .2rem .4rem rgba(1, 1, 1, 0.1);
+        margin-right: .5rem;
+        white-space: nowrap;
+    }
+
+    .delete-attach {
+        position: absolute;
+        right: -.2rem;
+        top: -.2rem;
+        color: blue;
+        cursor: pointer;
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.4rem;
+        text-align: center;
+        line-height: 2rem;
+        background: var(--mainColor);
+        opacity: .5;
+        border-radius: 50%;
+    }
+
+    .sidebar2 {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .sidebar2 .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 50px;
+            padding: 10px;
+        }
+
+            .sidebar2 .header h5 {
+                font-size: 14px;
+                font-weight: 500;
+                margin: 0;
+                text-transform: uppercase;
+            }
+
+    .main-content {
+        border-right: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+        .main-content .header {
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+            .main-content .header h5 {
+                margin: 0;
+                font-size: 18px;
+            }
+
+                .main-content .header h5:before {
+                    content: "#";
+                }
+
+        .main-content .chat-body {
+            overflow-y: scroll;
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content .chat-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            background: #f2f2f2;
+        }
+
+            .main-content .chat-input input {
+                width: 100%;
+                border: none;
+                height: 50px;
+                border-radius: 0;
+                border-top: 1px solid #eee;
+                background: #f2f2f2;
+                margin-top: auto;
+                text-indent: 10px;
+            }
+
+                .main-content .chat-input input[type="file"] {
+                    display: none;
+                }
+
+            .main-content .chat-input .actions {
+                padding: 0 10px;
+            }
+
+                .main-content .chat-input .actions i {
+                    color: #aaa;
+                    cursor: pointer;
+                }
+
+                    .main-content .chat-input .actions i:hover {
+                        color: #555;
+                    }
+
+                .main-content .chat-input .actions label {
+                    margin-bottom: 0;
+                }
+
+
+
+    .chat-message {
+        margin: 10px;
+        min-width: 200px;
+    }
+
+        .chat-message .message-content {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border: 1px solid #eee;
+            border-radius: 2px;
+            color: #777;
+            min-width: 220px;
+            max-width: 500px;
+        }
+
+            .chat-message .message-content img.post-image {
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .chat-message .message-content span {
+                color: #777;
+            }
+
+            .chat-message .message-content .author {
+                color: #1a6baa;
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+            .chat-message .message-content .content {
+                display: block;
+                padding: 2px 0;
+            }
+
+            .chat-message .message-content .timestamp {
+                font-size: 12px;
+                color: #999;
+                float: right;
+                line-height: 21px;
+                margin: 0 5px;
+            }
+
+        .chat-message .message-avatar {
+            width: 40px;
+            height: 40px;
+            float: left;
+            margin-right: 10px;
+            border-radius: 21px;
+        }
+
+    .ismine {
+        flex-direction: row-reverse;
+    }
+
+        .ismine .message-content {
+            background: #8abde6;
+        }
+
+            .ismine .message-content .author,
+            .ismine .message-content .timestamp,
+            .ismine .message-content .timestamp span,
+            .ismine .message-content .content {
+                color: white;
+            }
+
+            .ismine .message-content div {
+                flex-direction: row-reverse;
+            }
+
+        .ismine .message-avatar {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+
+    .users-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .users-container .header {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+            .users-container .header h5 {
+                margin: 0;
+                font-weight: 400;
+                text-transform: uppercase;
+                color: #555;
+                font-size: 16px;
+            }
+
+        .users-container #users-list .user {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+            .users-container #users-list .user img {
+                width: 32px;
+                height: 32px;
+                margin-right: 5px;
+            }
+
+            .users-container #users-list .user .right-side {
+                width: 100%;
+                line-height: 16px;
+                overflow: hidden;
+            }
+
+                .users-container #users-list .user .right-side span {
+                    display: block;
+                    font-size: 14px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+            .users-container #users-list .user:hover {
+                background: #f2f2f2;
+                cursor: pointer;
+            }
+
+        .users-container input {
+            width: 100%;
+            border: none;
+            height: 50px;
+            border-radius: 0;
+            border-top: 1px solid #eee;
+            background: #f2f2f2;
+            margin-top: auto;
+            text-indent: 10px;
+        }
+
+    body {
+        background: #eee;
+    }
+
+    .app {
+        display: flex;
+        height: 740px;
+        justify-content: space-between;
+        background: white;
+        border: 1px solid #ccc;
+    }
+
+        .app .sidebar2 {
+            width: 250px;
+        }
+
+        .app .main-content {
+            flex-grow: 1;
+        }
+
+        .app .users-container {
+            width: 250px;
+        }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+        input[type="radio"] + img {
+            border-radius: 50%;
+            border: 2px solid transparent;
+            padding: 1px;
+            cursor: pointer;
+        }
+
+        input[type="radio"]:checked + img {
+            border-radius: 50%;
+            border: 2px solid #5dca38;
+            padding: 1px;
+        }
+
+    .login-container,
+    .register-container {
+        width: 350px;
+        background: white;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        background: white;
+        margin: auto;
+    }
+
+        .login-container h4,
+        .register-container h4 {
+            font-weight: 400;
+        }
+
+    .register-container {
+        width: 450px;
+    }
+
+    .alert-dismissible {
+        position: fixed;
+        width: 500px;
+        right: 25px;
+        top: 25px;
+    }
+</style>
+
+@section Script {
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        var MaLHP = @ViewBag.MaLHP;
+
+        $(document).ready(function () {
+            $('.item-5').addClass("active");
+
+            $('.chatbox').hide();
+
+            LoadDanhSachSinhVien();
+
+            LoadListBuoiThaoLuan();
+
+        });
+
+    </script>
+
+    <script>
+        $("#search").on("keyup", function () {
+            var value = $(this).val().trim().toLowerCase();
+            $(".rooms li").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        $("#search2").on("keyup", function () {
+            var value = $(this).val().trim().toLowerCase();
+            $("#users-list li").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        $(function () {
+            var chat = $.connection.chatHub;
+
+            chat.client.uploadfileGroup = function (fromUser, message) {
+                if (fromUser == $('#message').attr('data-id')) {
+                    $('.LoadAllTinNhan').append(message);
+                    LoadListBuoiThaoLuan();
+                }
+                else {
+                    LoadListBuoiThaoLuan();
+                }
+            };
+
+            chat.client.ThongBaoUpdateThongTinNhom = function (GroupId, status) {
+                if (GroupId == $('#message').attr('data-id') && status == true) {
+                    LoadListBuoiThaoLuan();
+                    LoadThongTinBuoiThaoLuan(GroupId);
+                }
+                else {
+                    LoadListBuoiThaoLuan();
+                }
+            };
+
+            chat.client.ThongBaoAddVaoNhom = function (status) {
+                if (status == true) {
+                    LoadListBuoiThaoLuan();
+                }
+            };
+
+
+            chat.client.ThongBaoXoaNhomChat = function (Group, status) {
+                if (Group == $('#message').attr('data-id') && status == true) {
+                    LoadListBuoiThaoLuan();
+                    $('.LoadAllTinNhan').empty();
+                    $('.LoadThongTinBuoiThaoLuan').empty();
+                    $('.chatbox').hide();
+                    $('#message').attr('data-id', '');
+                }
+                else {
+                    LoadListBuoiThaoLuan();
+                }
+            };
+
+            chat.client.messageGroup = function (fromUser, message) {
+                if (fromUser == $('#message').attr('data-id')) {
+                    $('.chat-message').append(message);
+                    LoadListBuoiThaoLuan();
+                }
+                else {
+                    LoadListBuoiThaoLuan();
+                }
+            };
+
+            // Set initial focus to message input box.
+            $('#message').focus();
+
+            // Start the connection.
+            $.connection.hub.start().done(function () {
+
+                $('body').on('click', '.connect', function () {
+                    var btn = $(this);
+                    $('#message').attr('data-id', btn.attr('data-id'));
+                    $('#btn-send-message').attr('data-id', btn.attr('data-id'));
+                    LoadThongTinBuoiThaoLuan(btn.attr('data-id'));
+                    LoadAllTinNhan(btn.attr('data-id'));
+                    $('.chatbox').show();
+                    $('#message').focus();
+                });
+
+            });
+        });
+
+        $('.chatbox').submit(function (e) {
+            let message = $('#message').val();
+            let toUserId = $('#message').attr('data-id');
+            if (message.trim() != '') {
+                $.ajax({
+                    url: '/Chat/SendMessage',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: { toUserId: toUserId, message: message, isChatNhom: true },
+                    async: true,
+                    success: function (data) {
+                        $('.LoadAllTinNhan').append(data);
+                        $('#message').val('').focus();
+                    },
+                    complete: function () {
+                        LoadListBuoiThaoLuan();
+                    }
+                });
+            }
+            if (listFile.length > 0) {
+                var formData = new FormData();
+                formData.append("toUserId", toUserId);
+                formData.append("isChatNhom", true);
+                for (i = 0; i < listFile.length; i++) {
+                    formData.append(listFile[i].name, listFile[i]);
+                }
+                $.ajax({
+                    url: '/Chat/UploadFiles',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    async: true,
+                    success: function (data) {
+                        $('.LoadAllTinNhan').append(data);
+                        $('#message').val('').focus();
+                        listFile = [];
+                        renderFile();
+                    },
+                    complete: function () {
+                        LoadListBuoiThaoLuan();
+                    }
+                });
+            }
+            e.preventDefault();
+        });
+
+        function LoadAllTinNhan(id) {
+            $.ajax({
+                url: '/Chat/LoadAllTinNhanNhom',
+                data: { id: id },
+                dataType: 'html',
+                type: 'GET',
+                success: function (data) {
+                    $('.LoadAllTinNhan').html(data);
+                }
+            });
+        }
+
+        function LoadListBuoiThaoLuan() {
+            $.ajax({
+                url: '/ThaoLuan/LoadListBuoiThaoLuan',
+                data: { id: MaLHP },
+                type: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $('.rooms').html(data);
+                }
+            });
+        }
+
+        function LoadThongTinBuoiThaoLuan(id) {
+            $.ajax({
+                url: '/ThaoLuan/LoadThongTinBuoiThaoLuan',
+                data: { id: id },
+                dataType: 'html',
+                type: 'GET',
+                success: function (data) {
+                    $('.LoadThongTinBuoiThaoLuan').html(data);
+                }
+            });
+        }
+
+        function LoadDanhSachSinhVien() {
+            $.ajax({
+                url: '/ThaoLuan/LoadDanhSachSinhVien',
+                data: { id: MaLHP },
+                dataType: 'html',
+                type: 'GET',
+                success: function (data) {
+                    $('#users-list').html(data);
+                }
+            });
+        }
+
+        // Tự động scroll xuống cuối trang
+        $('body').on('DOMSubtreeModified', '.chat-message', function () {
+            $('.chat-body')[0].scrollTop = $('.chat-body')[0].scrollHeight;
+        });
+
+        $('.chat-body')[0].scrollTop = $('.chat-body')[0].scrollHeight;
+    </script>
+
+    <script>
+        var attachFile = document.getElementById("attach");
+        var imageFile = document.getElementById("image");
+        var file = document.querySelector(".list-file");
+        var listFile = [];
+        var typeFile = "image";
+        var deleteAttach = document.querySelectorAll(".delete-attach");
+
+        function setDeleteAttach() {
+            deleteAttach = document.querySelectorAll(".delete-attach");
+
+        }
+
+        function renderFile(typeFile) {
+            let listFileHTML = "";
+            let idx = 0;
+
+            if (typeFile == "image") {
+                for (const file of listFile) {
+                    listFileHTML += '<li><img src="' + URL.createObjectURL(file) + '" alt="Image file"><span data-idx="' + (idx) + '" onclick="deleteFile(' + idx + ')" class="delete-attach">X</span></li>';
+                    idx++;
+                }
+            } else {
+                for (const file of listFile) {
+                    listFileHTML += '<li><div class="file-input">' + file.name + '</div><span data-idx="' + (idx) + '" onclick="deleteFile(' + idx + ')" class="delete-attach">X</span></li>';
+                    idx++;
+                }
+            }
+
+            $('#message').focus();
+            if (listFile.length == 0) {
+                file.innerHTML = "";
+                file.classList.remove("active");
+            } else {
+                file.innerHTML = listFileHTML;
+                file.classList.add("active");
+            }
+
+            deleteAttach = document.querySelectorAll(".delete-attach");
+        }
+
+        attachFile.addEventListener("change", function (e) {
+            let filesInput = e.target.files;
+
+            for (const file of filesInput) {
+                listFile.push(file);
+            }
+
+            typeFile = "file";
+            renderFile("attach");
+
+            this.value = null;
+        });
+
+        imageFile.addEventListener("change", function (e) {
+            let filesImage = e.target.files;
+
+            for (const file of filesImage) {
+                listFile.push(file);
+                console.log(file);
+            }
+
+            typeFile = "image";
+
+            renderFile("image");
+
+            this.value = null;
+        });
+
+
+        function deleteFile(idx) {
+            if (!isNaN(idx)) listFile.splice(idx, 1);
+            renderFile(typeFile);
+        }
+    </script>
+}

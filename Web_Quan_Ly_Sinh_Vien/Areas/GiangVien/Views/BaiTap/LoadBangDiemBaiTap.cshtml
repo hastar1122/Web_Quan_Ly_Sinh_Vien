@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Web_Quan_Ly_Sinh_Vien.ViewModels.BangDiemViewModel>
+
+@{
+    int i = 1;
+}
+
+@{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center">
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ho)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaSV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LopHoc)
+            </td>
+            @{
+                foreach (var a in item.DiemBT)
+                {
+                    <td class="text-center">
+                        @{
+                            if (a != null)
+                            {
+                                <span>@Math.Round(double.Parse(a.ToString()), 2)</span>
+                            }
+                            else
+                            {
+                                <span class="text-warning">Chưa nộp</span>
+                            }
+                        }
+                    </td>
+                }
+            }
+            <td class="text-center">
+                @{
+                    if (item.DiemBTTB != null)
+                    {
+                        <span>@Math.Round(double.Parse(Html.DisplayFor(modelItem => item.DiemBTTB).ToString()), 2)</span>
+                    }
+                }
+            </td>
+        </tr>
+        i++;
+    }
+}

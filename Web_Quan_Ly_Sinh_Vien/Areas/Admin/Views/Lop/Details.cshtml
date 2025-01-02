@@ -1,0 +1,50 @@
+﻿@model tblLop
+
+<p>
+    <a class="informationLop btn btn-primary" data-id="@Model.ID"><i class="far fa-edit"></i> Chỉnh sửa</a>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-success" })
+</p>
+
+<div class="card shadow border-left-info mb-4">
+    <div class="card-header">
+        <h4 class="text-info m-0">Thông tin lớp học</h4>
+    </div>
+
+    <div class="card-body pb-0">
+        <dl class="row dl-horizontal mb-0">
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.TenLop):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.TenLop)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.MaNganh):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.tblNganhHoc.TenNganh)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.Khoa):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.Khoa)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.NamHoc):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.NamHoc)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+

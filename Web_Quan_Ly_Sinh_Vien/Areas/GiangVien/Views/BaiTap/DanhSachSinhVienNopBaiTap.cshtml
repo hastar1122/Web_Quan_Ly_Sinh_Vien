@@ -1,0 +1,214 @@
+﻿@model IEnumerable<tblNopBaiTap>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/GiangVien/Views/Shared/_LayoutGV.cshtml";
+}
+
+@Html.Action("Details", "BaiTap", new { id = @ViewBag.MaBT })
+
+@{
+    int i = 1;
+}
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách sinh viên nộp bài tập</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="1%">
+                            STT
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblUser.MaSV)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblUser.Ho)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblUser.Ten)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BaiLam)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NgayNop)
+                        </th>
+                        <th style="width:50px">
+                            @Html.DisplayNameFor(model => model.Diem)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NhanXet)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.MaSV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.Ho)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.Ten)
+                            </td>
+                            <td>
+                                @{
+                                    if (!String.IsNullOrWhiteSpace(@Html.DisplayFor(modelItem => item.BaiLam).ToString()))
+                                    {
+                                        <a class="load btn btn-outline-info" data-id="@Url.Content("~/File/NopBaiTap/" + Html.DisplayFor(modelItem => item.BaiLam))" data-toggle="modal" data-target="#displayModel"><i class="far fa-eye"></i> Xem live</a> <br />
+                                        <a class="btn btn-link" href="@Url.Action("DownLoad2","BaiTap", new { filename = Html.DisplayFor(modelItem => item.BaiLam)})"><i class="fas fa-file-download"> Tải xuống</i></a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-warning">Chưa nộp</span>
+                                    }
+                                }
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NgayNop)
+                            </td>
+                            <td>
+                                @{
+                                    if (!String.IsNullOrWhiteSpace(@Html.DisplayFor(modelItem => item.BaiLam).ToString()))
+                                    {
+                                        <div>@Html.TextBoxFor(modelItem => item.Diem, new { @class = "Diem form-control border border-danger", @style = "", @dataid = @item.MaSV })</div>
+                                    }
+                                }
+
+                            </td>
+                            <td>
+                                @{
+                                    if (!String.IsNullOrWhiteSpace(@Html.DisplayFor(modelItem => item.BaiLam).ToString()))
+                                    {
+                                        <div>@Html.TextAreaFor(modelItem => item.NhanXet, new { @class = "NhanXet form-control border border-info", @style = "", @dataid = @item.MaSV })</div>
+                                    }
+                                }
+
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="displayModel">
+    <div class="modal-dialog modal-dialog-centered modal-xl ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-0">
+                <iframe id="embPDF" src="" style="width:100% ; height: 100vh"></iframe>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"> Đóng </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Script {
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+    <script>
+        $(document).ready(function () {
+            $('.item-4').addClass("active");
+
+            $(".load").on('click', function () {
+                var link = $(this).attr('data-id');
+                $('#embPDF').attr('src', link);
+            });
+
+            $(".Diem").on('change',function () {
+                var Diem = $(this).val();
+                Diem = Number.parseFloat(Diem);
+                if (Number.isNaN(Diem)) {
+                    alert("Bạn phải nhập số");
+                    $(this).val('');
+                    $(this).focus();
+                }
+                var MaSV = $(this).attr('dataid');
+                var MaBT =  @ViewBag.MaBT;
+                console.log(Diem, MaSV, MaBT);
+                $.ajax({
+                    url: '@Url.Action("CapNhatDiem", "BaiTap")',
+                    data: { MaBT: MaBT, MaSV: MaSV, Diem: Diem },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (response) {
+                        console.log(response.status);
+                        if (response.status == true) {
+                            alert("Cập nhật điểm thành công");
+                        }
+                    },
+                    error: function () {
+                        alert("Có lỗi xảy ra");
+                    }
+
+
+                });
+            });
+
+            $(".NhanXet").on('change',function () {
+                var NhanXet = $(this).val();
+                var MaSV = $(this).attr('dataid');
+                var MaBT =  @ViewBag.MaBT;
+                console.log(NhanXet, MaSV, MaBT);
+                $.ajax({
+                    url: '@Url.Action("CapNhatNhanXet", "BaiTap")',
+                    data: { MaBT: MaBT, MaSV: MaSV, NhanXet: NhanXet },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (response) {
+                        console.log(response.status);
+                        if (response.status == true) {
+
+                        }
+                    },
+                    error: function () {
+                        alert("Có lỗi xảy ra");
+                    }
+
+
+                });
+            });
+        });
+    </script>
+}

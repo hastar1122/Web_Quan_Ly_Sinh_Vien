@@ -1,0 +1,39 @@
+﻿@model IEnumerable<tblNganhHoc>
+
+@{
+    int i = 1;
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr class="text-center">
+                <th width="1%">
+                    STT
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TenNganh)
+                </th>
+                <th width="100px"> Các thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>
+                        @i
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenNganh)
+                    </td>
+                    <td>
+                        <a class="information btn btn-sm btn-primary" data-id="@item.Id" data-toggle="tooltip" title="Sửa"> <i class="far fa-edit"></i></a>
+                        <a class="delete btn btn-sm btn-danger" data-id="@item.Id" data-toggle="tooltip" title="Xóa"> <i class="far fa-trash-alt"></i> </a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>

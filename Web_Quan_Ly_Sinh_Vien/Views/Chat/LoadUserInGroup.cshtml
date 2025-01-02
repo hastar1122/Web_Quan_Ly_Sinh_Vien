@@ -1,0 +1,47 @@
+﻿@model IEnumerable<tblChiTietNhomChat>
+
+@{
+    if (Model.Count() > 0)
+    {
+        <ul class="list-group">
+            @{
+                foreach (var item in Model)
+                {
+                    if (item.IsAdmin == true)
+                    {
+                        <li class="list-group-item list-group-item-action rounded-0 mb-2 shadow-sm border-0 border-left-info">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="custom-control custom-checkbox">
+                                    @*<input class="custom-control-input" disabled id="@item.tblUser.Id" type="checkbox" name="userId">*@
+                                    <label @*class="custom-control-label"*@ for="@item.tblUser.Id">
+                                        <p class="mb-0">@item.tblUser.Ho @item.tblUser.Ten </p> <span class="text-danger">Admin</span>
+                                    </label>
+                                </div>
+                                <label for="@item.tblUser.Id"><img src="@Url.Content(item.tblUser.Anh)" class="rounded-circle mr-1" alt="Vanessa Tucker" width="50" height="50"></label>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item list-group-item-action rounded-0 mb-2 shadow-sm border-0 border-left-info">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="@item.tblUser.Id" type="checkbox" name="userId">
+                                    <label class="custom-control-label" for="@item.tblUser.Id">
+                                        <p class="mb-0">@item.tblUser.Ho @item.tblUser.Ten </p> <span class="text-primary">Thành viên</span>
+                                    </label>
+                                </div>
+                                <label for="@item.tblUser.Id"><img src="@Url.Content(item.tblUser.Anh)" class="rounded-circle mr-1" alt="Vanessa Tucker" width="50" height="50"></label>
+                            </div>
+                        </li>
+                    }
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        @*<h6 class="text-danger">Không tìm thấy vui lòng kiểm tra lại</h6>*@
+    }
+}
+

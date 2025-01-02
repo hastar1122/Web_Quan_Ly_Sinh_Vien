@@ -1,0 +1,26 @@
+﻿@model IEnumerable<tblUser>
+@{
+    if (Model.Count() > 0)
+    {
+        <h6 class="text-success">Click đúp để tạo tin nhắn mới</h6>
+        <div class="list-group" id="listMessage">
+            @foreach (var item in Model)
+            {
+                <a href="#" data-id="@item.Id" class="create-msg list-group-item list-group-item-action border-0 mb-2 border-left-info shadow-sm">
+                    <div class="d-flex align-items-start">
+                        <img src="@Url.Content(item.Anh)" class="rounded-circle mr-1" alt="Vanessa Tucker"  width="50" height="50">
+                        <div class="flex-grow-1 ml-3">
+                            @item.Ho @item.Ten
+                            <br />
+                            <span class="text-primary">@item.MaSV</span>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <h6 class="text-danger">Không tìm thấy người phù hợp vui lòng kiểm tra lại!!</h6>
+    }
+}

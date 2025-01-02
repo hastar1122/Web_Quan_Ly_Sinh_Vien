@@ -1,0 +1,97 @@
+﻿@model tblLopHocPhan
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutSV.cshtml";
+}
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = Model.Id })
+
+<div class="card shadow border-left-info mb-4">
+    <div class="card-header py-3">
+        <h4 class="text-primary">Thông tin</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row dl-horizontal">
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.tblNganhHoc.TenNganh):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.tblNganhHoc.TenNganh)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.tblHocPhan.TenHP):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.tblHocPhan.TenHP)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.TenLHP):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.TenLHP)
+            </dd>
+
+            <dt class="col-md-3">
+                Giảng viên phụ trách:
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.tblUser.Ho) @Html.DisplayFor(model => model.tblUser.Ten)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.TGBatDau):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.TGBatDau)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.TGKetThuc):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.TGKetThuc)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.NamHoc):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.NamHoc)
+            </dd>
+
+            <dt class="col-md-3">
+                @Html.DisplayNameFor(model => model.HocKy):
+            </dt>
+
+            <dd class="col-md-9">
+                @Html.DisplayFor(model => model.HocKy)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-success" })
+</p>
+
+@section Script {
+    <script>
+        $(document).ready(function () {
+
+            $('.item-1').addClass("active");
+        });
+    </script>
+}
+

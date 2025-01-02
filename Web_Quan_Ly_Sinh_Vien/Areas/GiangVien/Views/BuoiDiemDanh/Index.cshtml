@@ -1,0 +1,117 @@
+﻿@model IEnumerable<tblBuoiDiemDanh>
+
+@{
+    int i = 1;
+}
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/GiangVien/Views/Shared/_LayoutGV.cshtml";
+}
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = @ViewBag.MaLHP })
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header py-3">
+        <div class="float-left mt-2">
+            <h5 class="m-0 text-primary">Danh sách các buổi điểm danh</h5>
+        </div>
+        <div class="float-right mb-n3">
+            @*<a class="btn btn-success mb-3 update"><i class="fas fa-sync"></i> Cập nhật </a>*@
+            <a href="@Url.Action("Create", "BuoiDiemDanh", new { id = ViewBag.MaLHP})" class="btn btn-primary mb-3 btn-icon-split">
+                <span class="icon text-white">
+                    <i class="fas fa-plus-circle"></i>
+                </span>
+                <span class="text">Thêm mới</span>
+            </a>
+        </div>
+    </div>
+
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="text-center">
+                        <th width="1%">
+                            STT
+                        </th>
+                        <th>
+                            Mã sinh viên
+                        </th>
+                        <th>
+                            Họ đệm
+                        </th>
+                        <th>
+                            Tên
+                        </th>
+                        <th>
+                            Lớp
+                        </th>
+                        <th>
+                            Ngày Sinh
+                        </th>
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <th class="text-center px-0"> Buổi @i <br /> @Html.DisplayFor(model => item.NgayDD)  <br /> @Html.ActionLink("Xem", "Index", "DiemDanh", new { id = item.Id }, new { @class = "btn btn-outline-info" })</th>
+                                i++;
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody class="LoadBuoiDiemDanh">
+                    @Html.Action("LoadBuoiDiemDanh", "BuoiDiemDanh", new { id = ViewBag.MaLHP })
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="card-footer">
+
+    </div>
+</div>
+
+@section Script {
+
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+            $('.item-5').addClass("active");
+        });
+
+        $('.update').click(function () {
+                LoadBuoiDiemDanh();
+            });
+
+            function LoadBuoiDiemDanh() {
+                $('#dataTable').DataTable().clear();
+                $('.table-responsive').remove();
+                $.ajax({
+                    url: '@Url.Action("LoadBuoiDiemDanh", "BuoiDiemDanh")',
+                    data: { id: @ViewBag.MaLHP},
+                    dataType: 'html',
+                    type: 'GET',
+                    success: function (data) {
+                        console.log(data)
+                        $('.LoadBuoiDiemDanh').html(data);
+                        $('#dataTable').DataTable().draw();
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+                });
+            };
+    </script>
+}

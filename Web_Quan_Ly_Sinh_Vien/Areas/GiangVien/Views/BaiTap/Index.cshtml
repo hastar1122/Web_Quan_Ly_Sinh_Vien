@@ -1,0 +1,198 @@
+﻿@model IEnumerable<tblBaiTap>
+
+@{
+    int i = 1;
+}
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/GiangVien/Views/Shared/_LayoutGV.cshtml";
+}
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = @ViewBag.MaLHP })
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header py-3">
+        <div class="float-left mt-2">
+            <h5 class="m-0 text-primary">Danh sách các bài tập</h5>
+        </div>
+        <div class="float-right mb-n3">
+            <a class="btn btn-info mb-3" href="@Url.Action("BangDiemBaiTap","BaiTap", new { id = ViewBag.MaLHP})"><i class="fas fa-award"></i> Bảng điểm bài tập</a>
+            <a href="@Url.Action("Create", "BaiTap", new { id = ViewBag.MaLHP})" class="btn btn-primary mb-3 btn-icon-split">
+                <span class="icon text-white">
+                    <i class="fas fa-plus-circle"></i>
+                </span>
+                <span class="text">Thêm mới</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="1%">
+                            STT
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TenBT)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DeBai)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblLopHocPhan.tblHocPhan.TenHP)
+                        </th>
+                        <th class="text-center">
+                            Thời gian
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Link)
+                        </th>
+                        <th>
+                            Các thao tác
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center" width="1%">
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenBT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DeBai)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblLopHocPhan.tblHocPhan.TenHP)
+                            </td>
+                            <td>
+                                <ul class="ml-n4 mb-n2">
+                                    <li>
+                                        @Html.LabelFor(model => item.NgayGiao, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.NgayGiao)
+                                    </li>
+                                    <li>
+                                        @Html.LabelFor(model => item.HanNop, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.HanNop)
+                                    </li>
+
+                                </ul>
+                            </td>
+                            <td>
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(item.Link))
+                                    {
+                                        <a class="load btn btn-outline-info" data-id="@Url.Content("~/File/BaiTap/" + Html.DisplayFor(modelItem => item.Link))" data-toggle="modal" data-target="#displayModel"><i class="far fa-eye"></i> Xem live</a> <br />
+                                        <a class="btn btn-link" href="@Url.Action("Download", "BaiTap", new { filename = @Html.DisplayFor(modelItem => item.Link)})"><i class="fas fa-file-download"> Tải xuống</i></a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="@Url.Action("Edit", "BaiTap", new { id = item.Id })" data-toggle="tooltip" title="Sửa"> <i class="far fa-edit"></i></a>
+                                <a class="btn btn-sm btn-info" href="@Url.Action("DanhSachSinhVienNopBaiTap","BaiTap", new { id = item.Id })" data-toggle="tooltip" title="Thông tin"> <i class="fas fa-info-circle"></i></a>
+                                <a class="delete btn btn-sm btn-danger" data-toggle="modal" data-target="#delModal" data-id="@item.Id" title="Xóa"><i class="far fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer">
+
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="delModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary">Thông báo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 class="text text-warning text-wr">Bạn có muốn xóa bài tập này không ?</h6>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                @using (Html.BeginForm("Delete", "BaiTap", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input name="id" id="MaBT1" type="hidden" value="" />
+                    <div class="form-actions no-color">
+                        <button type="submit" value="Xóa" class="btn btn-danger far fa-trash-alt"> Xóa </button>
+                    </div>
+                }
+                <button type="button" class="btn btn-primary" data-dismiss="modal"> Không </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="displayModel">
+    <div class="modal-dialog modal-dialog-centered modal-xl ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-0">
+                <iframe id="embPDF" src="" style="width:100% ; height: 100vh"></iframe>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"> Đóng </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Script {
+
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(document).ready(function () {
+            $('.item-4').addClass("active");
+        });
+
+        $(".delete").click(function () {
+            var MaBT = $(this).attr('data-id');
+            $("#MaBT1").val(MaBT);
+        });
+
+        $(".load").on('click', function () {
+            var link = $(this).attr('data-id');
+            $('#embPDF').attr('src', link);
+        });
+    </script>
+}

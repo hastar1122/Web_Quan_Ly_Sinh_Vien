@@ -1,0 +1,100 @@
+﻿@model tblBaiTap
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = Model.MaLHP })
+
+<p>
+    @Html.ActionLink(" Edit", "Edit", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-primary far fa-edit" })
+    @Html.ActionLink("Back to List", "Index", new { id = Model.MaLHP }, new { @class = "btn btn-success" })
+</p>
+
+<div class="card shadow border-left-info mb-4">
+    <div class="card-header">
+        <h4 class="text-info m-0">Thông tin bài tập</h4>
+    </div>
+
+    <div class="card-body pb-0 row">
+        <dl class="col-md-6 row dl-horizontal mb-0">
+            <dt class="col-md-5">
+                @Html.DisplayNameFor(model => model.TenBT):
+            </dt>
+
+            <dd class="col-md-7">
+                @Html.DisplayFor(model => model.TenBT)
+            </dd>
+
+            <dt class="col-md-5">
+                @Html.DisplayNameFor(model => model.DeBai):
+            </dt>
+
+            <dd class="col-md-7">
+                @Html.DisplayFor(model => model.DeBai)
+            </dd>
+
+            <dt class="col-md-5">
+                @Html.DisplayNameFor(model => model.Link):
+            </dt>
+
+            <dd class="col-md-7">
+                <a class="load btn btn-outline-info" data-id="@Url.Content("~/File/BaiTap/" + Html.DisplayFor(modelItem => modelItem.Link))" data-toggle="modal" data-target="#displayModel"><i class="far fa-eye"></i> Xem live</a>
+                <a class="btn btn-link" href="@Url.Action("Download", "BaiTap", new { filename = @Html.DisplayFor(modelItem => modelItem.Link)})"><i class="fas fa-file-download"> Tải xuống</i></a>
+            </dd>
+
+            <dt class="col-md-5">
+                @Html.DisplayNameFor(model => model.NgayGiao):
+            </dt>
+
+            <dd class="col-md-7">
+                @Html.DisplayFor(model => model.NgayGiao)
+            </dd>
+
+            <dt class="col-md-5">
+                @Html.DisplayNameFor(model => model.HanNop):
+            </dt>
+
+            <dd class="col-md-7">
+                @Html.DisplayFor(model => model.HanNop)
+            </dd>
+
+            <dt class="col-md-5">
+                @Html.DisplayNameFor(model => model.tblLopHocPhan.tblHocPhan.TenHP):
+            </dt>
+
+            <dd class="col-md-7">
+                @Html.DisplayFor(model => model.tblLopHocPhan.tblHocPhan.TenHP)
+            </dd>
+
+        </dl>
+        <dl class="col-md-6 row dl-horizontal mb-0">
+            <dt class="col-md-5">
+                Đã nộp:
+            </dt>
+            <dd class="col-md-7">
+                @ViewBag.TongSvDaNop / @ViewBag.TongSV
+            </dd>
+            <dt class="col-md-5">
+                Đã chấm điểm:
+            </dt>
+            <dd class="col-md-7">
+                @ViewBag.TongSvDaCham / @ViewBag.TongSvDaNop
+            </dd>
+            <dt class="col-md-5">
+                Điểm cao nhất:
+            </dt>
+            <dd class="col-md-7">
+                @ViewBag.DiemCaoNhat
+            </dd>
+            <dt class="col-md-5">
+                Điểm thấp nhất:
+            </dt>
+            <dd class="col-md-7">
+                @ViewBag.DiemThapNhat
+            </dd>
+            <dt class="col-md-5">
+                Điểm trung bình:
+            </dt>
+            <dd class="col-md-7">
+                @ViewBag.DiemTrungBinh
+            </dd>
+        </dl>
+    </div>
+</div>

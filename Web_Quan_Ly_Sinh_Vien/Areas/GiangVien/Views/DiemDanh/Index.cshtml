@@ -1,0 +1,206 @@
+﻿@model IEnumerable<tblDiemDanh>
+
+@{
+    int i = 1;
+}
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/GiangVien/Views/Shared/_LayoutGV.cshtml";
+}
+
+<div class="displayDetailBuoiDD">
+    @Html.Action("Details", "BuoiDiemDanh", new { id = @ViewBag.MaBuoiDD })
+</div>
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header py-3">
+        <h5 class="m-0 font-weight-bold text-primary">Danh sách sinh viên điểm danh</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="1%">
+                            STT
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblUser.MaSV)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblUser.Ho)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblUser.Ten)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblUser.tblLop.TenLop)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DiemDanh)
+                        </th>
+                        <th style="width:50px">
+                            @Html.DisplayNameFor(model => model.Diem)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GhiChu)
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center" width="1%">
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.MaSV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.Ho)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.Ten)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.tblLop.TenLop)
+                            </td>
+                            <td class="text-center">
+                                <form>
+                                    <div class="custom-control custom-checkbox">
+                                        @Html.CheckBoxFor(modelItem => item.DiemDanh, new { @class = "DiemDanh custom-control-input", @id = item.MaSV })
+                                        <label class="custom-control-label" for="@item.MaSV"></label>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <div>@Html.TextBoxFor(modelItem => item.Diem, new { @class = "Diem form-control border border-danger", @style = "", @dataid = @item.MaSV })</div>
+                            </td>
+                            <td>
+                                <div>@Html.TextAreaFor(modelItem => item.GhiChu, new { @class = "GhiChu form-control border border-info", @style = "", @dataid = @item.MaSV })</div>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
+
+@section Script {
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script>
+            $(document).ready(function () {
+                $('.item-5').addClass("active");
+
+                $('body').on('click', '.update', function () {
+                    $(".update-form").submit();
+                });
+
+                $('.DiemDanh').on('change', function () {
+                    var MaSV = $(this).attr('id');
+                    var MaBuoiDD =  @ViewBag.MaBuoiDD;
+                    console.log(MaSV, MaBuoiDD);
+                    $.ajax({
+                        url: '@Url.Action("CapNhatDiemDanh", "DiemDanh")',
+                        data: { MaBuoiDD: MaBuoiDD, MaSV: MaSV },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (response) {
+                            console.log(response.status);
+                            if (response.status == true) {
+                            }
+                            if (response.status == false) {
+                                alert("Có lỗi xảy ra");
+                            }
+                        },
+                        error: function () {
+                            alert("Có lỗi xảy ra");
+                        }
+
+                    });
+                });
+
+                $(".Diem").on('change',function () {
+                    var Diem = $(this).val();
+                    Diem = Number.parseFloat(Diem);
+                    if (Number.isNaN(Diem)) {
+                        alert("Bạn phải nhập số");
+                        $(this).val('');
+                        $(this).focus();
+                        return;
+                    }
+                    if (Diem > 10) {
+                        alert("Điểm không được lớn hơn 10");
+                        $(this).val('');
+                        $(this).focus();
+                        return;
+                    }
+                    var MaSV = $(this).attr('dataid');
+                    var MaBuoiDD =  @ViewBag.MaBuoiDD;
+                    console.log(Diem, MaSV, MaBuoiDD);
+                    $.ajax({
+                        url: '@Url.Action("CapNhatDiemDiemDanh", "DiemDanh")',
+                        data: { MaBuoiDD: MaBuoiDD, MaSV: MaSV, Diem: Diem },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (response) {
+                            console.log(response.status);
+                            if (response.status == true) {
+                            }
+                            if (response.status == false) {
+                                alert("Có lỗi xảy ra");
+                            }
+                        },
+                        error: function () {
+                            alert("Có lỗi xảy ra");
+                        }
+
+                    });
+                });
+
+                $(".GhiChu").on('change',function () {
+                    var GhiChu = $(this).val();
+                    var MaSV = $(this).attr('dataid');
+                    var MaBuoiDD =  @ViewBag.MaBuoiDD;
+                    console.log(GhiChu, MaSV, MaBuoiDD);
+                    $.ajax({
+                        url: '@Url.Action("CapNhatGhiChuDiemDanh", "DiemDanh")',
+                        data: { MaBuoiDD: MaBuoiDD, MaSV: MaSV, GhiChu: GhiChu },
+                        dataType: "json",
+                        type: "POST",
+                        success: function (response) {
+                            if (response.status == true) {
+                                console.log(response.status)
+                            }
+                        },
+                        error: function () {
+                            alert("Có lỗi xảy ra");
+                        }
+
+
+                    });
+                });
+            });
+
+
+    </script>
+}
+

@@ -1,0 +1,26 @@
+﻿@model tblChiTietNhomChat
+
+<div class="d-flex align-items-center  py-4">
+    <div class="position-relative">
+        <img src="@Url.Content(Model.tblNhomChat.Avatar)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+    </div>
+    <div class="flex-grow-1 pl-3">
+        <strong>@Model.tblNhomChat.TenNhom</strong>
+    </div>
+
+</div>
+
+<div class="room-actions">
+    <a class=" mr-1 text-secondary px-3" data-toggle="dropdown"><i class="fas fa-cogs"></i></a>
+    <div class="dropdown-menu">
+        @{
+            if (Model.IsAdmin == true)
+            {
+                <a class="dropdown-item text-warning openModalRename" data-id="@Model.MaNhom" href="#"><i class="fas fa-info-circle"></i> Sửa tên buổi thảo luận</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger openModalDeleteGroup" data-id="@Model.MaNhom" href="#"><i class="far fa-trash-alt"></i> Xóa buổi thảo luận</a>
+            }
+        }
+
+    </div>
+</div>

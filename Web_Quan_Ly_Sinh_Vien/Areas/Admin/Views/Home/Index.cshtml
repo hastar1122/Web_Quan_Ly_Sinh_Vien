@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 ">
+            <div class="card-body mb-3">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Ngành học
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TongSoNganhHoc</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-university fa-3x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index", "NganhHoc")" style="text-decoration: none">
+                <div class="card-footer text-center no-gutters "> Xem chi tiết <i class="fas fa-arrow-alt-circle-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 ">
+            <div class="card-body mb-3">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Học phần
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TongSoHocPhan</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-school fa-3x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index", "HocPhan")" style="text-decoration: none">
+                <div class="card-footer text-center no-gutters "> Xem chi tiết <i class="fas fa-arrow-alt-circle-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 ">
+            <div class="card-body mb-3">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Giảng viên
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TongSoGiangVien</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-tie fa-3x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index", "GiangVien")" style="text-decoration: none">
+                <div class="card-footer text-center no-gutters "> Xem chi tiết <i class="fas fa-arrow-alt-circle-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 ">
+            <div class="card-body mb-3">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Lớp học phần
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TongSoLopHocPhan</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chalkboard-teacher fa-3x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index", "LopHocPhan")" style="text-decoration: none">
+                <div class="card-footer text-center no-gutters "> Xem chi tiết <i class="fas fa-arrow-alt-circle-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4 offset-xl-3">
+        <div class="card border-left-secondary shadow h-100 ">
+            <div class="card-body mb-3">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                            Lớp học
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TongSoLop</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chalkboard fa-3x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index", "Lop")" style="text-decoration: none">
+                <div class="card-footer text-center no-gutters "> Xem chi tiết <i class="fas fa-arrow-alt-circle-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-danger shadow h-100 ">
+            <div class="card-body mb-3">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            Sinh viên
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TongSoSinhVien</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-graduate fa-3x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index", "SinhVien")" style="text-decoration: none">
+                <div class="card-footer text-center no-gutters "> Xem chi tiết <i class="fas fa-arrow-alt-circle-right"></i></div>
+            </a>
+        </div>
+    </div>
+</div>
+

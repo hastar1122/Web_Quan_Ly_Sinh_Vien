@@ -1,0 +1,88 @@
+﻿@model IEnumerable<tblLopHocPhan>
+
+<div class=" row">
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-bottom-info shadow">
+                <div class="card-header bg-info text-white">
+                    <div class="clearfix align-items-center ">
+                        <div class="float-left">
+                            <h6 class="mt-2">@Html.DisplayFor(modelItem => item.TenLHP)</h6>
+                        </div>
+                        <div class="float-right mr-n3">
+                            <a class="btn " data-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropleft">
+                                <a class="information dropdown-item text-warning" style="cursor:pointer;" data-id="@item.Id"> <i class="far fa-edit"></i> Sửa lớp học phần</a>
+                                <a class="btn dropdown-item text-info" href="@Url.Action("Details","LopHocPhan", new {id = item.Id })"> <i class="fas fa-info-circle"></i> Xem chi tiết</a>
+                                <a class="delete dropdown-item text-danger" style="cursor:pointer;"  data-id="@item.Id"> <i class="far fa-trash-alt"></i> Xóa lớp học phần</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Details","LopHocPhan", new {id = item.Id })" style="all:unset; cursor:pointer">
+
+                    <div class="card-body p-0 pt-1 text-center">
+                        <dl class="row dl-horizontal m-0 ">
+
+                            <dt class="col-md-12">
+                                @Html.DisplayNameFor(model => model.tblNganhHoc.TenNganh):
+                            </dt>
+
+                            <dd class="col-md-12">
+                                @Html.DisplayFor(model => item.tblNganhHoc.TenNganh)
+                            </dd>
+
+                            <dt class="col-md-12">
+                                @Html.DisplayNameFor(model => model.tblHocPhan.TenHP):
+                            </dt>
+
+                            <dd class="col-md-12">
+                                @Html.DisplayFor(model => item.tblHocPhan.TenHP)
+                            </dd>
+
+                            <dt class="col-md-12">
+                                Giảng viên phụ trách:
+                            </dt>
+
+                            <dd class="col-md-12">
+                                @Html.DisplayFor(model => item.tblUser.Ho) @Html.DisplayFor(model => item.tblUser.Ten)
+                            </dd>
+
+                            <dt class="col-md-6 text-md-right pr-2">
+                                @Html.DisplayNameFor(model => model.NamHoc):
+                            </dt>
+
+                            <dd class="col-md-6 text-md-left p-0">
+                                @Html.DisplayFor(model => item.NamHoc)
+                            </dd>
+
+                            <dt class="col-md-7 text-md-right pr-2">
+                                @Html.DisplayNameFor(model => model.HocKy):
+                            </dt>
+
+                            <dd class="col-md-5 text-md-left p-0 m-0">
+                                @Html.DisplayFor(model => item.HocKy)
+                            </dd>
+
+                            <dd class="col-md text-center">
+                                @{
+                                    if (item.TGKetThuc <= DateTime.Now)
+                                    {
+                                        <span class="badge badge-pill badge-success">Đã hoàn thành</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-pill badge-primary">Chưa hoàn thành</span>
+                                    }
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+                </a>
+            </div>
+        </div>
+    }
+</div>

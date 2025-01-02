@@ -1,0 +1,36 @@
+﻿@model tblChiTietNhomChat
+
+<div class="py-2 px-4 border-bottom d-none d-lg-block">
+    <div class="d-flex align-items-center py-1">
+        <div class="position-relative">
+            <img src="@Url.Content(Model.tblNhomChat.Avatar)" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+        </div>
+        <div class="flex-grow-1 pl-3">
+            <strong>@Model.tblNhomChat.TenNhom</strong>
+        </div>
+        <div>
+            <button class="btn btn-light btn-lg mr-1 px-3" data-toggle="dropdown"><i class="fas fa-cogs"></i></button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item text-warning openModalInforGroup" data-id="@Model.MaNhom" href="#"><i class="fas fa-info-circle"></i> Thông tin nhóm chat</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-info openModalAddUserToGroup" data-id="@Model.MaNhom" href="#"><i class="fas fa-user-plus"></i> Thêm mới thành viên</a>
+                <div class="dropdown-divider"></div>
+                @{
+                    if (Model.IsAdmin == true)
+                    {
+                        <a class="dropdown-item text-success openModalListUserInGroup" is-admin="1" data-id="@Model.MaNhom" href="#"><i class="fas fa-users"></i> Xem thành viên</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger openModalDeleteGroup" data-id="@Model.MaNhom" href="#"><i class="far fa-trash-alt"></i> Xóa nhóm chat</a>
+                    }
+                    else
+                    {
+                        <a class="dropdown-item text-success openModalListUserInGroup" is-admin="0" data-id="@Model.MaNhom" href="#"><i class="fas fa-users"></i> Xem thành viên</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger openModalLeaveGroup" data-id="@Model.MaNhom" href="#"><i class="fas fa-running"></i> Rời khỏi nhóm chat</a>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

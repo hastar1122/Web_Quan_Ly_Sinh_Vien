@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSV.cshtml";
+}
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = @ViewBag.MaLHP })
+
+<div class="LoadAllBuoiDiemDanh">
+    @Html.Action("LoadAllBuoiDiemDanh", "DiemDanh", new { id = ViewBag.MaLHP })
+</div>
+
+
+@section Script {
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".item-4").addClass("active");
+
+            $('body').on('click', '.DiemDanh', function () {
+                var MaBuoiDD = $(this).val();
+                var MaSV = $(this).attr('data-id');
+                $.ajax({
+                    async: true,
+                    url: '@Url.Action("DiemDanh", "DiemDanh")',
+                    data: { MaBuoiDD: MaBuoiDD, MaSV: MaSV },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.status == true) {
+                            LoadAllBuoiDiemDanh();
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.success("Điểm danh thành công");
+                        }
+                        else {
+                            alert(data.status);
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.warning('Điểm danh không thành công');
+                        }
+                    },
+                    error: function () {
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.warning('Đã có lỗi xảy ra');
+                    }
+                });
+            });
+
+            // Load thông tin tất cả các giảng viên
+            function LoadAllBuoiDiemDanh() {
+                $('.LoadAllBuoiDiemDanh').empty();
+                $.ajax({
+                    url: '@Url.Action("LoadAllBuoiDiemDanh", "DiemDanh")',
+                    data: { id: @ViewBag.MaLHP},
+                    dataType: 'html',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.LoadAllBuoiDiemDanh').html(data);
+                    },
+                    error: function () {
+                        alert("Đã có lỗi xảy ra");
+                    },
+                });
+            };
+        });
+    </script>
+}
+

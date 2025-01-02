@@ -1,0 +1,111 @@
+﻿@model IEnumerable<tblLopHocPhan>
+
+@{
+    int i = 1;
+}
+
+<div class="card shadow mb-4 border-left-info ">
+    <div class="card-header py-3">
+        <div class="float-left mt-2">
+            <h5 class="m-0 font-weight-bold text-primary">Danh sách các lớp học phần</h5>
+        </div>
+    </div>
+
+    <div class="card-body ">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td class="text-center" width="1%">
+                            STT
+                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblNganhHoc.TenNganh)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tblHocPhan.TenHP)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TenLHP)
+                        </th>
+                        <th>
+                            Thông tin
+                        </th>
+                        <th>
+                            Giảng viên phụ trách
+                        </th>
+                        <th>
+                            Trạng thái
+                        </th>
+                        <th>
+                            Vào
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center" width="1%">
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblNganhHoc.TenNganh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblHocPhan.TenHP)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenLHP)
+                            </td>
+                            <td>
+                                <ul class="ml-n4 mb-n2">
+                                    <li>
+                                        @Html.LabelFor(model => item.TGBatDau, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.TGBatDau)
+                                    </li>
+                                    <li>
+                                        @Html.LabelFor(model => item.TGKetThuc, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.TGKetThuc)
+                                    </li>
+                                    <li>
+                                        @Html.LabelFor(model => item.NamHoc, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.NamHoc)
+                                    </li>
+                                    <li>
+                                        @Html.LabelFor(model => item.HocKy, htmlAttributes: new { @class = "control-label font-weight-bold" }): @Html.DisplayFor(modelItem => item.HocKy)
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblUser.Ho) @Html.DisplayFor(modelItem => item.tblUser.Ten)
+                            </td>
+                            <td>
+                                @{
+                                    if (item.TGKetThuc <= DateTime.Now)
+                                    {
+                                        <span class="badge badge-pill badge-success">Đã hoàn thành</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-pill badge-primary">Chưa hoàn thành</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-info" href="@Url.Action("Details","LopHocPhan", new {id = item.Id })"> <i class="fas fa-sign-in-alt"></i></a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer">
+
+    </div>
+</div>
+
+
+
+

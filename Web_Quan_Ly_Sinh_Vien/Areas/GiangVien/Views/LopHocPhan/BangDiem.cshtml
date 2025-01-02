@@ -1,0 +1,211 @@
+﻿@model tblLopHocPhan
+
+@{
+    ViewBag.Title = "BangDiem";
+    Layout = "~/Areas/GiangVien/Views/Shared/_LayoutGV.cshtml";
+}
+
+@Html.Action("LoadItem", "LopHocPhan", new { id = @ViewBag.MaLHP })
+
+<div class="card shadow mb-4 border-left-info">
+    <div class="card-header py-3">
+        <div class="float-left mt-2">
+            <h5 class="m-0 text-primary">Bảng điểm quá trình</h5>
+        </div>
+        <div class="float-right mb-n3 row">
+            <div class="d-flex">
+                <a class="btn btn-info mx-2" data-toggle="modal" data-target="#TinhDiemModal"><i class="fas fa-calculator"></i> Tính điểm quá trình</a>
+                @using (Html.BeginForm("ExportToExcel", "LopHocPhan", FormMethod.Get, new { @class = "formexport" }))
+                {
+                    <input name="id" id="LopHocPhan" type="hidden" value="" />
+                }
+                <a class="export btn btn-success"><i class="fas fa-download"></i> Export Excel</a>
+                @*<a class="btn btn-primary mx-2" data-toggle="modal" data-target="#importModal"><i class="fas fa-upload"></i> Import điểm quá trình</a>*@
+            </div>
+        </div>
+    </div>
+    <div class="card-body LoadBangDiem">
+        @Html.Action("LoadBangDiem", "LopHocPhan", new { id = ViewBag.MaLHP })
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="TinhDiemModal">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-info">Tính điểm quá trình</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                @Html.HiddenFor(item => item.Id)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TyLeDiemDD, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.DropDownList("TyLeDiemDD", new SelectList(new[] { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 }), "--Chọn tỷ lệ--", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TyLeDiemBT, htmlAttributes: new { @class = "control-label col-md" })
+                    <div class="col-md">
+                        @Html.DropDownList("TyLeDiemBT", new SelectList(new[] { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 }), "--Chọn tỷ lệ--", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="">
+                    <button type="button" class="update btn btn-outline-success"><i class="far fa-edit"></i> Cập nhật</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script {
+
+
+    @*Link script sử dụng table view*@
+
+    <!-- Page level plugins -->
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+    <!-- Custom styles for this page -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.item-3').addClass("active");
+
+        });
+
+        $('#TinhDiemModal').on('show.bs.modal', function () {
+            var id = @ViewBag.MaLHP;
+            $.ajax({
+                url: '@Url.Action("LoadTyLeDiem", "LopHocPhan")',
+                data: { id: id },
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    $('#TyLeDiemDD').val(data.TyLeDiemDD);
+                    $('#TyLeDiemBT').val(data.TyLeDiemBT);
+                }
+            });
+        });
+
+        $('.update').on('click', function () {
+            var id = @ViewBag.MaLHP;
+            var TyLeDiemDD = parseFloat($('#TyLeDiemDD').val());
+            var TyLeDiemBT = parseFloat($('#TyLeDiemBT').val());
+            if ($('#TyLeDiemDD').val() == '' || $('#TyLeDiemBT').val() == '') {
+                alert('Vui lòng chọn tỷ lệ');
+            }
+            else if (TyLeDiemDD + TyLeDiemBT > 1 || TyLeDiemDD + TyLeDiemBT < 1) {
+                alert('Tỷ lệ chọn không hợp lệ vui lòng kiểm tra lại');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("UpdateAllDiem", "LopHocPhan")',
+                    data: { id: id, TyLeDiemDD: TyLeDiemDD, TyLeDiemBT: TyLeDiemBT },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == true) {
+                            $('#dataTable').DataTable().clear();
+                            $('.table-responsive').remove();
+                            $.ajax({
+                                url: '@Url.Action("LoadBangDiem", "LopHocPhan")',
+                                data: { id: id },
+                                dataType: 'html',
+                                type: 'GET',
+                                success: function (data) {
+                                    $('.LoadBangDiem').html(data);
+                                    $('#dataTable').DataTable().draw();
+                                },
+                                error: function () {
+                                    alert("Đã có lỗi xảy ra");
+                                }
+                            });
+                            toastr.options.positionClass = "toast-bottom-right";
+                            toastr.success("Cập nhật thành công");
+                            $('#TinhDiemModal').modal('hide');
+                        }
+                    }
+                });
+            };
+        });
+
+        // Cập nhật ghi chú cho sinh viên
+        $("body").on('change', '.GhiChu',function () {
+            var GhiChu = $(this).val();
+            var MaSV = $(this).attr('dataid');
+            var MaLHP =  @ViewBag.MaLHP;
+            $.ajax({
+                url: '@Url.Action("CapNhatGhiChu", "LopHocPhan")',
+                data: { MaLHP: MaLHP, MaSV: MaSV, GhiChu: GhiChu },
+                dataType: "json",
+                type: "POST",
+                success: function (response) {
+                    console.log(response.status);
+                    if (response.status == true) {
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra");
+                }
+
+
+            });
+        });
+
+        $("body").on('change', '.DiemQT', function () {
+            var DiemQT = $(this).val();
+            DiemQT = Number.parseFloat(DiemQT);
+            if (Number.isNaN(DiemQT)) {
+                alert("Bạn phải nhập số");
+                $(this).val('');
+                $(this).focus();
+            }
+            var MaSV = $(this).attr('dataid');
+            var id =  @ViewBag.MaLHP;
+            $.ajax({
+                url: '@Url.Action("UpdateDiem", "LopHocPhan")',
+                data: { id: id, MaSV: MaSV, DiemQT: DiemQT },
+                dataType: "json",
+                type: "POST",
+                success: function (response) {
+                    console.log(response.status);
+                    if (response.status == true) {
+                        alert("Cập nhật điểm thành công");
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra");
+                }
+            });
+        });
+
+        // Export to Excel
+        $('body').on('click', '.export', function () {
+            $('#LopHocPhan').val(@ViewBag.MaLHP);
+            $('.formexport').submit();
+        });
+    </script>
+}
+
